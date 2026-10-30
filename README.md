@@ -23,10 +23,17 @@ assets/
   music.mp3         musik latar untuk tombol Musik
 ```
 
-## Mode desktop di Android
+## Tampilan sama di Android & iOS (tanpa zoom)
 
-Skrip kecil di `<head>` `index.html` mengubah viewport jadi lebar 1024 saat terdeteksi Android,
-jadi tampilan desktop otomatis. Ubah `DESKTOP_WIDTH` untuk mengatur lebarnya.
+Skrip kecil di `<head>` `index.html` mengunci layout selebar `DESKTOP_WIDTH` (1024) di Android, iPhone,
+iPad, dan iPadOS. Browser lalu mengecilkan skalanya otomatis supaya pas selebar layar, jadi navbar lengkap
+(Beranda sampai Hubungi) tampil semua di atas dengan posisi yang sama di semua perangkat.
+
+- Zoom dimatikan: `user-scalable=no` (Android), blok event `gesturestart` (iOS), dan `touch-action: pan-x pan-y`
+  di CSS (class `touch-locked` di `<html>`). Scroll tetap mulus karena tidak ada listener `touchmove`.
+- Kolom isian form dibuat 16px di perangkat sentuh, karena iOS otomatis zoom saat fokus ke kolom < 16px.
+- Mau layout lebih lebar/sempit (teks lebih kecil/besar di HP)? Ubah `DESKTOP_WIDTH`.
+- Desktop (mouse + keyboard) tidak terpengaruh.
 
 ## Animasi scroll (dua arah, berulang)
 

@@ -5,15 +5,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <script>document.documentElement.classList.add('js');</script>
   <script>
-    // Android: paksa layout desktop (mirip "Situs desktop" di Chrome).
-    // Lebar 1024 = breakpoint lg Tailwind, jadi tampilan desktop aktif penuh.
-    // Ubah angka DESKTOP_WIDTH kalau mau lebih lebar/sempit.
+    // Android & iOS: tampilan sama persis. Layout dikunci selebar DESKTOP_WIDTH
+    // (1024 = breakpoint lg Tailwind, jadi navbar lengkap tampil semua di atas),
+    // lalu browser otomatis mengecilkan skalanya supaya pas selebar layar.
+    // Zoom (cubit / ketuk dua kali) dimatikan. Ubah DESKTOP_WIDTH kalau mau lebih lebar/sempit.
     (function () {
       var DESKTOP_WIDTH = 1024;
-      if (/Android/i.test(navigator.userAgent || '')) {
-        var vp = document.querySelector('meta[name="viewport"]');
-        if (vp) vp.setAttribute('content', 'width=' + DESKTOP_WIDTH);
-      }
+      var ua = navigator.userAgent || '';
+      var isIPadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+      if (!(/Android|iPhone|iPad|iPod/i.test(ua) || isIPadOS)) return;
+
+      var vp = document.querySelector('meta[name="viewport"]');
+      if (vp) vp.setAttribute('content', 'width=' + DESKTOP_WIDTH + ', user-scalable=no');
+      document.documentElement.classList.add('touch-locked');
+
+      // iOS Safari mengabaikan user-scalable=no, jadi gesture cubit diblok lewat event bawaan Safari.
+      // (Bukan touchmove, supaya scroll tetap mulus.)
+      ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (t) {
+        document.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false });
+      });
     })();
   </script>
   <title>Ach Muhlis (Austin Official) | Portofolio & Biodata</title>
@@ -78,6 +88,26 @@
       color: #FFFFFF;
       font-family: 'Geist', sans-serif;
       overflow-x: hidden;
+    }
+
+    /* Android & iOS: ukuran teks tidak diubah otomatis, tanpa kilat saat ditap */
+    html {
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Perangkat sentuh: hanya geser (scroll) yang boleh, cubit & ketuk dua kali tidak zoom */
+    html.touch-locked,
+    html.touch-locked body {
+      touch-action: pan-x pan-y;
+    }
+
+    /* iOS otomatis zoom saat kolom isian < 16px; dibuat 16px supaya halaman tidak bergeser */
+    html.touch-locked input,
+    html.touch-locked textarea,
+    html.touch-locked select {
+      font-size: 16px !important;
     }
 
     h1, h2, h3, h4 {
