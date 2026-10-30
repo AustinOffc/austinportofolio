@@ -23,17 +23,27 @@ assets/
   music.mp3         musik latar untuk tombol Musik
 ```
 
-## Tampilan sama di Android & iOS (tanpa zoom)
+## Layout mobile & desktop
 
-Skrip kecil di `<head>` `index.html` mengunci layout selebar `DESKTOP_WIDTH` (1024) di Android, iPhone,
-iPad, dan iPadOS. Browser lalu mengecilkan skalanya otomatis supaya pas selebar layar, jadi navbar lengkap
-(Beranda sampai Hubungi) tampil semua di atas dengan posisi yang sama di semua perangkat.
+Android/iOS sekarang memakai **lebar layar asli** (tidak lagi dikunci 1024px lalu diperkecil), jadi teks dan
+tombol berukuran normal dan mudah dibaca. Desktop (>= 768px) tampilannya tidak berubah.
 
-- Zoom dimatikan: `user-scalable=no` (Android), blok event `gesturestart` (iOS), dan `touch-action: pan-x pan-y`
-  di CSS (class `touch-locked` di `<html>`). Scroll tetap mulus karena tidak ada listener `touchmove`.
-- Kolom isian form dibuat 16px di perangkat sentuh, karena iOS otomatis zoom saat fokus ke kolom < 16px.
-- Mau layout lebih lebar/sempit (teks lebih kecil/besar di HP)? Ubah `DESKTOP_WIDTH`.
-- Desktop (mouse + keyboard) tidak terpengaruh.
+- Breakpoint: di bawah 768px = layout mobile; di bawah 640px = ukuran judul khusus HP. Semua aturannya ada di
+  blok `LAYOUT MOBILE` di akhir `<style>` pada `index.html`.
+- Mobile: navbar selebar layar dengan tombol 44px, teks kecil dinaikkan (12px jadi 13px, 14px jadi 15px),
+  jarak antar bagian lebih rapat, identitas 2 kolom, hitung mundur muat 4 kolom, filter proyek 3 tombol sama lebar,
+  form kontak selebar mungkin, modal jadi bottom sheet, toast di bawah tengah, aman dari poni dan home bar.
+- Zoom tetap dimatikan (`user-scalable=no`, blok `gesturestart`, `touch-locked` di `<html>`). Mau mengizinkan zoom?
+  Hapus `maximum-scale=1, user-scalable=no` di skrip `<head>` dan class `touch-locked`.
+- Kolom isian 16px di perangkat sentuh (mencegah auto-zoom iOS).
+
+## Responsif & smooth
+
+- HP/tablet memakai mode ringan: animasi scroll tanpa blur, tanpa backdrop-filter di navbar/chip/menu,
+  cahaya hero statis, parallax hero dimatikan. Ini yang paling berpengaruh ke kelancaran scroll.
+- `hover:` Tailwind hanya aktif di perangkat yang punya hover (`hoverOnlyWhenSupported`), jadi tidak ada efek hover yang nyangkut setelah ditap.
+- FAQ membuka/menutup dengan animasi tinggi. Menu mobile mengunci scroll halaman, bisa ditutup dengan Esc.
+- Lightbox bisa digeser kiri/kanan untuk pindah foto dan ke bawah untuk menutup. Modal bisa ditutup dengan ketuk area gelap atau Esc.
 
 ## Animasi scroll (dua arah, berulang)
 
@@ -41,7 +51,7 @@ Elemen muncul bertahap (fade + geser + blur, urut satu per satu) **setiap kali**
 scroll ke bawah maupun ke atas. Begitu keluar layar, efeknya di-reset (elemen disembunyikan lagi), jadi
 animasinya muncul terus-menerus. Saat scroll ke atas, elemen meluncur turun dari atas (arah dibalik).
 Ada juga progress bar scroll, cahaya biru di hero yang ikut bergerak, parallax halus di foto galeri,
-spotlight yang mengikuti kursor di card, dan angka hero yang menghitung naik ulang tiap muncul.
+spotlight yang mengikuti kursor di card (desktop), dan angka hero yang menghitung naik ulang tiap muncul.
 
 - Semua kodenya ada di bagian `Efek scroll & visual` (CSS di `<style>`, JS di `<script>` terakhir) di `index.html`.
 - Mau elemen baru ikut animasi: tambahkan atribut `data-rv="up"` (pilihan: `up`, `blur`, `left`, `right`, `zoom`, `fade`).

@@ -2,21 +2,20 @@
 <html lang="id" class="dark scroll-smooth">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="color-scheme" content="dark" />
   <script>document.documentElement.classList.add('js');</script>
   <script>
-    // Android & iOS: tampilan sama persis. Layout dikunci selebar DESKTOP_WIDTH
-    // (1024 = breakpoint lg Tailwind, jadi navbar lengkap tampil semua di atas),
-    // lalu browser otomatis mengecilkan skalanya supaya pas selebar layar.
-    // Zoom (cubit / ketuk dua kali) dimatikan. Ubah DESKTOP_WIDTH kalau mau lebih lebar/sempit.
+    // Android & iOS: layout mengikuti lebar layar asli (layout mobile khusus, bukan desktop yang diperkecil).
+    // Zoom (cubit / ketuk dua kali) tetap dimatikan seperti sebelumnya.
     (function () {
-      var DESKTOP_WIDTH = 1024;
       var ua = navigator.userAgent || '';
       var isIPadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
       if (!(/Android|iPhone|iPad|iPod/i.test(ua) || isIPadOS)) return;
 
       var vp = document.querySelector('meta[name="viewport"]');
-      if (vp) vp.setAttribute('content', 'width=' + DESKTOP_WIDTH + ', user-scalable=no');
+      if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
       document.documentElement.classList.add('touch-locked');
 
       // iOS Safari mengabaikan user-scalable=no, jadi gesture cubit diblok lewat event bawaan Safari.
@@ -53,6 +52,7 @@
   <script>
     tailwind.config = {
       darkMode: 'class',
+      future: { hoverOnlyWhenSupported: true },
       theme: {
         extend: {
           fontFamily: {
@@ -361,6 +361,149 @@
       .cd-num.tick, .cd-party .cd-cell { animation: none; }
       .frame > img, .cd-bar { transition: none; }
     }
+
+    /* =====================================================================
+       LAYOUT MOBILE (Android / iOS) + UI/UX responsif & smooth
+       Android/iOS sekarang memakai lebar layar asli (bukan layout desktop
+       yang diperkecil). Desktop (>= 768px) tidak berubah.
+       Selector diawali "html" supaya menang atas utility Tailwind tanpa !important.
+       ===================================================================== */
+    :root { color-scheme: dark; }
+
+    html.menu-lock,
+    html.menu-lock body { overflow: hidden; }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto !important; }
+      #info-modal.flex,
+      #info-modal.flex > div { animation: none !important; }
+    }
+
+    /* ---------- Modal info: muncul halus (desktop: pop, mobile: sheet dari bawah) ---------- */
+    @keyframes modal-fade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes modal-pop  { from { opacity: 0; translate: 0 16px; scale: .97; } to { opacity: 1; translate: 0 0; scale: 1; } }
+    @keyframes sheet-up   { from { translate: 0 100%; } to { translate: 0 0; } }
+    #info-modal.flex { animation: modal-fade 260ms var(--ease-out); }
+    #info-modal.flex > div { animation: modal-pop 380ms var(--ease-out); }
+
+    /* ---------- Lightbox: swipe tidak diganggu browser, tinggi mengikuti layar asli ---------- */
+    #lightbox { touch-action: none; }
+    #lb-img { max-height: 80vh; max-height: 80dvh; }
+
+    /* ---------- Layar sentuh: hover tidak "nyangkut" setelah ditap ---------- */
+    @media (hover: none) {
+      .frame:hover > img { transform: none; }
+      .frame:hover > .photo-par { transform: translate3d(0, calc(var(--py, 0) * 1px), 0) scale(1.12); }
+      .frame:hover::before, .frame:hover::after { top: 12px; width: 26px; height: 26px; }
+      .frame:hover::before { left: 12px; }
+      .frame:hover::after { right: 12px; }
+      .frame:hover .tint { opacity: 0; }
+    }
+
+    /* ---------- Mode ringan untuk HP/tablet: animasi tanpa blur, tanpa backdrop-filter ----------
+       Blur + backdrop-filter yang dianimasikan adalah penyebab utama scroll patah-patah di HP. */
+    @media (max-width: 767px), (pointer: coarse) {
+      @keyframes rv-up    { from { opacity: 0; translate: 0 calc(24px * var(--rv-s, 1)); } to { opacity: 1; translate: 0 0; } }
+      @keyframes rv-blur  { from { opacity: 0; translate: 0 calc(20px * var(--rv-s, 1)); } to { opacity: 1; translate: 0 0; } }
+      @keyframes rv-left  { from { opacity: 0; translate: 0 calc(24px * var(--rv-s, 1)); } to { opacity: 1; translate: 0 0; } }
+      @keyframes rv-right { from { opacity: 0; translate: 0 calc(24px * var(--rv-s, 1)); } to { opacity: 1; translate: 0 0; } }
+      @keyframes rv-zoom  { from { opacity: 0; translate: 0 calc(16px * var(--rv-s, 1)); scale: .96; } to { opacity: 1; translate: 0 0; scale: 1; } }
+      @keyframes rv-kid   { from { opacity: 0; translate: 0 calc(14px * var(--rv-s, 1)); } to { opacity: 1; translate: 0 0; } }
+      html .rv-in[data-rv] { animation-duration: 700ms; }
+
+      html .reveal-word { filter: none; transform: translateY(6px); }
+
+      html .hero-glow { animation: none; translate: none; filter: blur(44px); }
+      html .gallery-glow { filter: blur(48px); }
+
+      html .glass-chip { -webkit-backdrop-filter: none; backdrop-filter: none; background: rgba(10, 10, 10, .74); }
+      html header > nav { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: rgba(24, 24, 24, .94); }
+      html #mobile-menu-panel { -webkit-backdrop-filter: none; backdrop-filter: none; background-color: rgba(0, 0, 0, .97); }
+    }
+
+    /* ---------- LAYOUT MOBILE: di bawah 768px ---------- */
+    @media (max-width: 767px) {
+      html { scroll-padding-top: 1.5rem; }
+
+      /* Teks lebih besar & jelas (12px -> 13px, 14px -> 15px) */
+      html .text-xs { font-size: 0.8125rem; line-height: 1.25rem; }
+      html .text-sm { font-size: 0.9375rem; line-height: 1.5rem; }
+      html .text-\[11px\] { font-size: 0.75rem; line-height: 1rem; }
+
+      /* Jarak antar bagian lebih rapat */
+      html .mb-12 { margin-bottom: 2rem; }
+      html #biodata article { padding: 1.25rem; gap: 1.25rem; }
+      html #alur .grid > div { padding: 1.25rem; gap: 1.25rem; }
+
+      /* Biodata: 4 kotak identitas jadi 2 kolom */
+      html #biodata article:nth-of-type(1) .grid > div { padding: .75rem; }
+      html #biodata article:nth-of-type(1) .grid > div > p:last-child { font-size: 1.0625rem; line-height: 1.4rem; overflow-wrap: anywhere; }
+      html .food-item, html .drink-item { flex-wrap: wrap; gap: .125rem .75rem; }
+
+      /* Hitung mundur ulang tahun: 4 kolom muat di layar sempit */
+      html #ultah { padding: 1rem; gap: 1rem; }
+      html #bd-grid { gap: .5rem; }
+      html #bd-grid .cd-cell { padding: .875rem .25rem; }
+
+      /* Proyek: filter jadi 3 tombol sama lebar */
+      html #proyek [role="tablist"] { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; }
+      html .project-filter-btn { min-height: 2.75rem; padding-left: .5rem; padding-right: .5rem; text-align: center; }
+
+      /* Area ketuk minimal 44px */
+      html #projects-grid a,
+      html #copy-coord-btn,
+      html #fuel-combo-btn,
+      html #reset-filter-btn,
+      html .faq-trigger { min-height: 2.75rem; }
+      html #copy-coord-btn,
+      html #fuel-combo-btn { justify-content: center; }
+
+      /* Kontak: kartu luar diratakan supaya kolom isian selebar mungkin */
+      html #kontak > div > .rounded-3xl { padding: 0; border: 0; background: transparent; border-radius: 0; gap: 1.5rem; }
+      html #contact-form { padding: 1.25rem; }
+      html #contact-form input,
+      html #contact-form textarea { padding: .8125rem .875rem; border-radius: .75rem; }
+      html #contact-form button { min-height: 3rem; }
+
+      /* Footer */
+      html footer button,
+      html footer a { min-height: 2.75rem; display: inline-flex; align-items: center; }
+      html footer { padding-bottom: calc(2.5rem + env(safe-area-inset-bottom, 0px)); }
+
+      /* Menu layar penuh: aman dari poni/home bar, bisa di-scroll di HP pendek */
+      html #mobile-menu-panel {
+        padding-top: calc(env(safe-area-inset-top, 0px) + 5.25rem);
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 1.5rem);
+      }
+
+      /* Toast di tengah bawah, bukan pojok kanan */
+      html #system-toast {
+        left: 1rem;
+        right: 1rem;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 1rem);
+      }
+
+      /* Modal jadi bottom sheet */
+      html #info-modal { align-items: flex-end; padding: 0; }
+      html #info-modal > div {
+        max-width: none;
+        border-radius: 1.5rem 1.5rem 0 0;
+        padding: 1.25rem 1.25rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
+      }
+      html #info-modal.flex > div { animation: sheet-up 420ms var(--ease-out); }
+
+      /* Lightbox: tombol lebih besar & aman dari poni */
+      html #lb-close { top: calc(env(safe-area-inset-top, 0px) + 1rem); width: 2.75rem; height: 2.75rem; }
+      html #lb-prev, html #lb-next { width: 2.75rem; height: 2.75rem; }
+    }
+
+    /* ---------- Khusus HP (di bawah 640px): skala judul ---------- */
+    @media (max-width: 639px) {
+      html #hero h1 { font-size: clamp(2rem, 8.6vw, 2.75rem); line-height: 1.12; letter-spacing: -0.02em; }
+      html section:not(#hero) h2 { font-size: 1.75rem; line-height: 1.2; }
+      html #tagline-reveal-text { font-size: 1.75rem; line-height: 1.25; }
+      html .cd-num { font-size: clamp(1.25rem, 7vw, 1.625rem); }
+    }
   </style>
 </head>
 <body class="bg-surface-0 text-white antialiased selection:bg-blue-600 selection:text-white">
@@ -375,9 +518,9 @@
     <source src="assets/music.mp3?v=1793213920550" type="audio/mpeg" />
   </audio>
 
-  <header class="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
-    <nav aria-label="Navigasi Utama" class="flex items-center gap-2 md:gap-3 lg:gap-6 bg-surface-100/85 backdrop-blur-md border border-surface-400 rounded-2xl px-3 py-2">
-      <a href="#hero" class="flex items-center gap-2 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-weighted hover:bg-surface-200 active:scale-[0.98]">
+  <header class="fixed top-2 md:top-4 left-0 right-0 z-50 flex justify-center px-3 md:px-4" style="padding-top: env(safe-area-inset-top, 0px);">
+    <nav aria-label="Navigasi Utama" class="flex w-full max-w-lg md:w-auto md:max-w-none items-center justify-between md:justify-start gap-2 md:gap-3 lg:gap-6 bg-surface-100/85 backdrop-blur-md border border-surface-400 rounded-2xl px-2 py-1.5 md:px-3 md:py-2">
+      <a href="#hero" class="flex items-center gap-2 min-h-[44px] md:min-h-0 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-weighted hover:bg-surface-200 active:scale-[0.98]">
         <img src="assets/logo.webp?v=3" alt="Logo Austin Official" width="24" height="24" decoding="async" class="h-6 w-6 rounded-md object-cover" />
         <span class="text-sm font-semibold tracking-tight text-white whitespace-nowrap md:hidden lg:inline">Austin Official</span>
       </a>
@@ -420,19 +563,19 @@
           id="music-toggle"
           type="button"
           aria-label="Putar atau jeda musik latar Austin Official"
-          class="flex items-center gap-2 rounded-lg bg-surface-200 border border-surface-400 px-3 py-1 text-sm font-semibold text-neutral-200 transition duration-300 ease-weighted hover:bg-surface-300 hover:border-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="flex items-center justify-center gap-2 h-11 md:h-auto rounded-lg bg-surface-200 border border-surface-400 px-3.5 md:px-3 md:py-1 text-sm font-semibold text-neutral-200 transition duration-300 ease-weighted hover:bg-surface-300 hover:border-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <span class="flex items-end gap-0.5 h-3" id="eq-visualizer" aria-hidden="true">
             <span class="eq-bar eq-bar-1 w-0.5 h-3 bg-blue-500"></span>
             <span class="eq-bar eq-bar-2 w-0.5 h-3 bg-blue-500"></span>
             <span class="eq-bar eq-bar-3 w-0.5 h-3 bg-blue-500"></span>
           </span>
-          <span id="music-label" class="hidden sm:inline text-xs font-mono">Musik</span>
+          <span id="music-label" class="hidden min-[380px]:inline text-xs font-mono">Musik</span>
         </button>
 
         <a
           href="#kontak"
-          class="hidden sm:inline-flex items-center gap-1 rounded-lg bg-blue-600 px-3 py-1 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+          class="hidden sm:inline-flex items-center gap-1 h-11 md:h-auto rounded-lg bg-blue-600 px-3 md:py-1 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
         >
           <span>Hubungi</span>
         </a>
@@ -443,7 +586,7 @@
           aria-expanded="false"
           aria-controls="mobile-menu-panel"
           aria-label="Buka menu navigasi"
-          class="md:hidden flex h-8 w-8 items-center justify-center rounded-lg bg-surface-200 border border-surface-400 text-white transition duration-300 ease-weighted hover:bg-surface-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="md:hidden flex h-11 w-11 items-center justify-center rounded-lg bg-surface-200 border border-surface-400 text-white transition duration-300 ease-weighted hover:bg-surface-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <span class="relative flex h-4 w-4 flex-col justify-between py-0.5">
             <span id="burger-line-1" class="block h-0.5 w-4 bg-white transition-transform duration-500 ease-weighted origin-center"></span>
@@ -468,29 +611,30 @@
   <div
     id="mobile-menu-panel"
     aria-hidden="true"
-    class="fixed inset-0 z-40 pointer-events-none opacity-0 transition-opacity duration-500 ease-weighted bg-surface-0/95 backdrop-blur-xl flex flex-col justify-between px-6 pt-24 pb-12"
+    inert
+    class="md:hidden fixed inset-0 z-40 pointer-events-none opacity-0 transition-opacity duration-500 ease-weighted bg-surface-0/95 backdrop-blur-xl flex flex-col justify-between gap-6 overflow-y-auto overscroll-contain px-4 pt-24 pb-8"
   >
-    <ul class="flex flex-col gap-4">
+    <ul class="flex flex-col gap-2.5">
       <li class="mobile-nav-link" style="transition-delay: 60ms;">
-        <a href="#hero" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Beranda</a>
+        <a href="#hero" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3.5 text-xl font-semibold text-white">Beranda</a>
       </li>
       <li class="mobile-nav-link" style="transition-delay: 120ms;">
-        <a href="#biodata" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Biodata</a>
+        <a href="#biodata" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3.5 text-xl font-semibold text-white">Biodata</a>
       </li>
       <li class="mobile-nav-link" style="transition-delay: 150ms;">
-        <a href="#galeri" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Galeri</a>
+        <a href="#galeri" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3.5 text-xl font-semibold text-white">Galeri</a>
       </li>
       <li class="mobile-nav-link" style="transition-delay: 200ms;">
-        <a href="#proyek" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Proyek</a>
+        <a href="#proyek" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3.5 text-xl font-semibold text-white">Proyek</a>
       </li>
       <li class="mobile-nav-link" style="transition-delay: 250ms;">
-        <a href="#alur" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Cara kerja</a>
+        <a href="#alur" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3.5 text-xl font-semibold text-white">Cara kerja</a>
       </li>
       <li class="mobile-nav-link" style="transition-delay: 300ms;">
-        <a href="#faq" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Tanya-tanya</a>
+        <a href="#faq" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3.5 text-xl font-semibold text-white">Tanya-tanya</a>
       </li>
       <li class="mobile-nav-link" style="transition-delay: 350ms;">
-        <a href="#kontak" class="mobile-link block rounded-xl bg-blue-600 px-4 py-3 text-2xl font-semibold text-white">Ngobrol yuk</a>
+        <a href="#kontak" class="mobile-link block rounded-xl bg-blue-600 px-4 py-3.5 text-xl font-semibold text-white">Ngobrol yuk</a>
       </li>
     </ul>
 
@@ -507,14 +651,14 @@
 
   <main id="main-content">
 
-    <section id="hero" class="relative overflow-hidden pt-24 pb-16 md:pt-24 md:pb-24 px-4 sm:px-6">
+    <section id="hero" class="relative overflow-hidden pt-20 pb-12 md:pt-24 md:pb-24 px-4 sm:px-6">
       <div class="hero-dots" aria-hidden="true"></div>
       <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
       <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
-      <div class="relative max-w-6xl mx-auto pt-8">
+      <div class="relative max-w-6xl mx-auto pt-4 md:pt-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
-          <div class="lg:col-span-7 flex flex-col items-start gap-6">
+          <div class="lg:col-span-7 flex flex-col items-start gap-5 md:gap-6">
             <div data-rv="up" class="inline-flex items-center gap-2 rounded-full bg-surface-100 border border-surface-400 px-3 py-1">
               <span class="h-2 w-2 rounded-full bg-blue-500"></span>
               <span class="text-xs text-neutral-300">Muhlis, 23 tahun, anak Madura</span>
@@ -529,17 +673,17 @@
               Aku Muhlis dari Lombang, Sumenep. Bikin payment gateway, toko top up game, app catatan, sampai pemutar musik tanpa iklan. Kodenya dibantu AI, idenya dan begadangnya dari aku.
             </p>
 
-            <div data-rv="up" class="flex flex-wrap items-center gap-4 pt-2">
+            <div data-rv="up" class="flex flex-wrap items-center gap-4 pt-2 w-full sm:w-auto">
               <a
                 href="#proyek"
-                class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-base font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+                class="inline-flex w-full sm:w-auto justify-center min-h-12 sm:min-h-0 items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-base font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
               >
                 <span>Lihat hasil iseng-ku</span>
                 <i class="ph ph-arrow-down-right text-lg" aria-hidden="true"></i>
               </a>
             </div>
 
-            <div class="grid grid-cols-3 gap-4 pt-4 w-full max-w-[680px]">
+            <div class="grid grid-cols-3 gap-2.5 sm:gap-4 pt-4 w-full max-w-[680px]">
               <div data-rv="zoom" class="spot rounded-xl bg-surface-100 border border-surface-300 p-3">
                 <p class="text-xl sm:text-2xl font-bold font-mono text-white"><span data-count="4" data-from="0">4</span> web</p>
                 <p class="text-xs text-neutral-400 mt-1">yang beneran jalan</p>
@@ -566,7 +710,7 @@
                 <span class="text-xs font-mono text-blue-400 bg-surface-0 px-2 py-0.5 rounded">online</span>
               </div>
 
-              <figure class="frame frame--clean group relative mb-4 overflow-hidden rounded-2xl border border-surface-400 bg-surface-0 aspect-[4/3] lg:aspect-square">
+              <figure class="frame frame--clean group relative mb-4 overflow-hidden rounded-2xl border border-surface-400 bg-surface-0 aspect-[4/5] sm:aspect-[4/3] lg:aspect-square">
                 <img
                   src="assets/foto-1.webp?v=1"
                   alt="Foto Ach Muhlis (Austin Official) duduk santai di kursi kulit, berjas hitam dan kemeja putih"
@@ -601,7 +745,7 @@
               </figure>
 
               <div class="flex flex-col gap-2">
-                <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between">
+                <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between gap-3">
                   <span class="text-xs text-neutral-400 flex items-center gap-2">
                     <i class="ph ph-calendar-blank text-blue-400 text-base" aria-hidden="true"></i>
                     Tanggal Lahir
@@ -609,7 +753,7 @@
                   <span class="text-xs font-mono text-white">6 April 2003</span>
                 </div>
 
-                <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between">
+                <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between gap-3">
                   <span class="text-xs text-neutral-400 flex items-center gap-2">
                     <i class="ph ph-compass text-blue-400 text-base" aria-hidden="true"></i>
                     Asal
@@ -617,7 +761,7 @@
                   <span class="text-xs font-mono text-blue-400">Ujung timur Madura</span>
                 </div>
 
-                <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between">
+                <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between gap-3">
                   <span class="text-xs text-neutral-400 flex items-center gap-2">
                     <i class="ph ph-palette text-blue-400 text-base" aria-hidden="true"></i>
                     Warna Favorit
@@ -643,7 +787,7 @@
       </div>
     </section>
 
-    <section id="filosofi" aria-label="Filosofi Kerja" class="py-20 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
+    <section id="filosofi" aria-label="Filosofi Kerja" class="py-14 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
       <div class="max-w-6xl mx-auto">
         <p
           id="tagline-reveal-text"
@@ -654,7 +798,7 @@
       </div>
     </section>
 
-    <section id="biodata" class="py-20 md:py-24 px-4 sm:px-6">
+    <section id="biodata" class="py-14 md:py-24 px-4 sm:px-6">
       <div class="max-w-6xl mx-auto">
         
         <div class="mb-12">
@@ -666,7 +810,7 @@
           </p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6">
 
           <article class="md:col-span-7 rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col justify-between gap-6">
             <div class="flex items-start justify-between gap-4">
@@ -678,7 +822,7 @@
               </span>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-3 sm:gap-4">
               <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
                 <p class="text-xs font-mono text-neutral-400">Nama</p>
                 <p class="text-lg font-bold text-white mt-1">Ach Muhlis</p>
@@ -897,7 +1041,7 @@
       </div>
     </section>
 
-    <section id="galeri" aria-label="Galeri foto" class="relative overflow-hidden py-20 md:py-24 px-4 sm:px-6 border-y border-surface-300">
+    <section id="galeri" aria-label="Galeri foto" class="relative overflow-hidden py-14 md:py-24 px-4 sm:px-6 border-y border-surface-300">
       <div class="gallery-glow -top-24 -right-32 h-[460px] w-[460px]" aria-hidden="true"></div>
       <div class="gallery-glow -bottom-32 -left-40 h-[420px] w-[420px]" aria-hidden="true"></div>
       <div class="relative max-w-6xl mx-auto">
@@ -941,7 +1085,7 @@
       </div>
     </section>
 
-    <section id="proyek" class="py-20 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
+    <section id="proyek" class="py-14 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
       <div class="max-w-6xl mx-auto">
         
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
@@ -979,7 +1123,7 @@
           </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mb-8">
           <div class="rounded-xl bg-surface-0 border border-surface-300 p-4">
             <p class="text-sm font-semibold text-white">Buat bayar dan top up</p>
             <p class="text-xs text-neutral-400 mt-1">AustinPay buat terima pembayaran, Austin Store buat top up game dan layanan digital.</p>
@@ -994,7 +1138,7 @@
           </div>
         </div>
 
-        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           </div>
 
         <div id="projects-empty" class="hidden rounded-2xl bg-surface-0 border border-surface-400 p-8 text-center">
@@ -1012,7 +1156,7 @@
       </div>
     </section>
 
-    <section id="alur" class="py-20 md:py-24 px-4 sm:px-6">
+    <section id="alur" class="py-14 md:py-24 px-4 sm:px-6">
       <div class="max-w-6xl mx-auto">
         
         <div class="mb-12">
@@ -1021,7 +1165,7 @@
           </h2>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
           <div class="rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col justify-between gap-6">
             <div class="flex items-center justify-between">
               <span class="text-xs font-mono text-blue-400 bg-surface-200 border border-surface-400 px-3 py-1 rounded-lg">Tahap 1</span>
@@ -1065,7 +1209,7 @@
       </div>
     </section>
 
-    <section id="sosial" class="py-20 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
+    <section id="sosial" class="py-14 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
       <div class="max-w-6xl mx-auto">
         
         <div class="mb-12">
@@ -1077,13 +1221,13 @@
           </p>
         </div>
 
-        <div id="socials-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div id="socials-grid" class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
           </div>
 
       </div>
     </section>
 
-    <section id="faq" class="py-20 md:py-24 px-4 sm:px-6">
+    <section id="faq" class="py-14 md:py-24 px-4 sm:px-6">
       <div class="max-w-4xl mx-auto">
         
         <div class="mb-12">
@@ -1092,7 +1236,7 @@
           </h2>
         </div>
 
-        <div class="flex flex-col gap-4" id="faq-container">
+        <div class="flex flex-col gap-3 md:gap-4" id="faq-container">
           <div class="rounded-2xl bg-surface-100 border border-surface-400 p-4">
             <button type="button" class="faq-trigger w-full flex items-center justify-between text-left gap-4 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="true">
               <span class="text-lg font-semibold text-white">Austin Official itu siapa sih?</span>
@@ -1167,7 +1311,7 @@
       </div>
     </section>
 
-    <section id="kontak" class="py-20 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
+    <section id="kontak" class="py-14 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
       <div class="max-w-5xl mx-auto">
         <div class="rounded-3xl bg-surface-0 border border-surface-400 p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
@@ -1209,7 +1353,7 @@
                 <label for="sender-name" class="block text-xs font-mono text-neutral-300 mb-1">Namamu</label>
                 <input
                   type="text"
-                  id="sender-name"
+                  id="sender-name" autocomplete="name"
                   name="name"
                   required
                   placeholder="Nama kamu"
@@ -1222,7 +1366,7 @@
                 <label for="sender-email" class="block text-xs font-mono text-neutral-300 mb-1">Email</label>
                 <input
                   type="email"
-                  id="sender-email"
+                  id="sender-email" inputmode="email" autocomplete="email" autocapitalize="off"
                   name="email"
                   required
                   placeholder="nama@domain.com"
@@ -1236,7 +1380,7 @@
                 <textarea
                   id="sender-message"
                   name="message"
-                  rows="3"
+                  rows="4"
                   required
                   placeholder="Ide, pertanyaan, atau sekadar sapaan juga boleh"
                   class="w-full rounded-lg bg-surface-0 border border-surface-400 px-3 py-2 text-sm text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -1274,7 +1418,7 @@
 
   </main>
 
-  <footer class="bg-surface-0 py-12 px-4 sm:px-6">
+  <footer class="bg-surface-0 py-10 md:py-12 px-4 sm:px-6">
     <div class="max-w-6xl mx-auto rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
       <div>
         <div class="flex items-center gap-2">
@@ -1719,6 +1863,8 @@
       menuOpen = !menuOpen;
       mobileBtn.setAttribute('aria-expanded', String(menuOpen));
       mobilePanel.setAttribute('aria-hidden', String(!menuOpen));
+      mobilePanel.inert = !menuOpen;
+      document.documentElement.classList.toggle('menu-lock', menuOpen);
 
       if (menuOpen) {
         mobilePanel.classList.remove('pointer-events-none', 'opacity-0');
@@ -1736,11 +1882,57 @@
     }
 
     mobileBtn.addEventListener('click', toggleMobileMenu);
+    mobilePanel.inert = true;
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && menuOpen) toggleMobileMenu(); });
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => { if (e.matches && menuOpen) toggleMobileMenu(); });
     document.querySelectorAll('.mobile-link').forEach(link => {
       link.addEventListener('click', () => {
         if (menuOpen) toggleMobileMenu();
       });
     });
+
+    const faqReduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function faqSet(content, open) {
+      clearTimeout(content._faqT);
+      if (faqReduce) { content.classList.toggle('hidden', !open); return; }
+      const DUR = 380;
+      const EASE = 'cubic-bezier(0.22, 1, 0.36, 1)';
+      const hiddenNow = content.classList.contains('hidden');
+      const startH = hiddenNow ? 0 : content.offsetHeight;
+      const startOp = hiddenNow ? '0' : getComputedStyle(content).opacity;
+      content.style.transition = 'none';
+      content.style.overflow = 'hidden';
+      const reset = () => {
+        ['height', 'paddingTop', 'paddingBottom', 'opacity', 'transition', 'overflow'].forEach(k => { content.style[k] = ''; });
+      };
+      if (open) {
+        content.classList.remove('hidden');
+        content.style.height = 'auto';
+        content.style.paddingTop = '';
+        content.style.paddingBottom = '';
+        const targetH = content.offsetHeight;
+        content.style.height = startH + 'px';
+        content.style.opacity = startOp;
+        if (startH === 0) { content.style.paddingTop = '0px'; content.style.paddingBottom = '0px'; }
+        void content.offsetHeight;
+        content.style.transition = 'height ' + DUR + 'ms ' + EASE + ', opacity ' + DUR + 'ms ' + EASE + ', padding ' + DUR + 'ms ' + EASE;
+        content.style.height = targetH + 'px';
+        content.style.paddingTop = '';
+        content.style.paddingBottom = '';
+        content.style.opacity = '1';
+        content._faqT = setTimeout(reset, DUR + 40);
+      } else {
+        content.style.height = startH + 'px';
+        content.style.opacity = startOp;
+        void content.offsetHeight;
+        content.style.transition = 'height ' + DUR + 'ms ' + EASE + ', opacity ' + DUR + 'ms ' + EASE + ', padding ' + DUR + 'ms ' + EASE;
+        content.style.height = '0px';
+        content.style.paddingTop = '0px';
+        content.style.paddingBottom = '0px';
+        content.style.opacity = '0';
+        content._faqT = setTimeout(() => { content.classList.add('hidden'); reset(); }, DUR + 40);
+      }
+    }
 
     document.querySelectorAll('.faq-trigger').forEach(trigger => {
       trigger.addEventListener('click', () => {
@@ -1749,7 +1941,7 @@
         const expanded = trigger.getAttribute('aria-expanded') === 'true';
 
         trigger.setAttribute('aria-expanded', String(!expanded));
-        content.classList.toggle('hidden');
+        faqSet(content, !expanded);
         icon.classList.toggle('rotate-180');
       });
     });
@@ -1846,10 +2038,13 @@
       modal.classList.add('flex');
     });
 
-    closeModal.addEventListener('click', () => {
+    function hideModal() {
       modal.classList.add('hidden');
       modal.classList.remove('flex');
-    });
+    }
+    closeModal.addEventListener('click', hideModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) hideModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('flex')) hideModal(); });
 
     /* ===== Hitung mundur ulang tahun =====
        Tanggal lahir diambil dari portfolioData.birthDate. Dihitung pakai zona waktu WIB (UTC+7)
@@ -1993,6 +2188,20 @@
         else if (e.key === 'ArrowLeft') show(idx - 1);
         else if (e.key === 'ArrowRight') show(idx + 1);
       });
+
+      // Geser kiri/kanan untuk pindah foto, geser ke bawah untuk menutup (layar sentuh)
+      var tx = 0, ty = 0, tracking = false;
+      lb.addEventListener('touchstart', function (e) {
+        if (e.touches.length !== 1) { tracking = false; return; }
+        tracking = true; tx = e.touches[0].clientX; ty = e.touches[0].clientY;
+      }, { passive: true });
+      lb.addEventListener('touchend', function (e) {
+        if (!tracking) return;
+        tracking = false;
+        var t = e.changedTouches[0], dx = t.clientX - tx, dy = t.clientY - ty;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.4) show(idx + (dx < 0 ? 1 : -1));
+        else if (dy > 90 && dy > Math.abs(dx) * 1.4) close();
+      }, { passive: true });
     })();
   </script>
 
@@ -2005,6 +2214,7 @@
     (function () {
       try {
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var lite = window.matchMedia('(pointer: coarse), (max-width: 767px)').matches;   // HP/tablet: efek scroll lebih ringan
         var STEP = 90;   // jeda antar elemen yang muncul bersamaan (ms)
         var MAX_STEPS = 7;
         var dir = 'down';                       // arah scroll terakhir: 'down' | 'up'
@@ -2161,7 +2371,7 @@
           var y = window.pageYOffset || root.scrollTop || 0;
           var max = Math.max(root.scrollHeight - window.innerHeight, 1);
           if (bar) bar.style.setProperty('--p', Math.min(y / max, 1).toFixed(4));
-          if (!reduce && y < 1400) root.style.setProperty('--sy', Math.round(y));
+          if (!reduce && !lite && y < 1400) root.style.setProperty('--sy', Math.round(y));
           if (header) header.classList.toggle('is-scrolled', y > 12);
 
           // Parallax foto galeri: bergerak pelan, searah/berlawanan mengikuti scroll (dua arah)
