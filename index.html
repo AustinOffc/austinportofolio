@@ -1,0 +1,1451 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ach Muhlis (Austin Official) | Portofolio & Biodata</title>
+  <meta name="description" content="Portofolio Ach Muhlis (Austin Official), anak Lombang, Sumenep yang suka bikin web dibantu AI: AustinPay, Austin Store, LuciBook, dan AustinPlay." />
+  <meta name="robots" content="index, follow" />
+  
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Muhlis | Austin Official" />
+  <meta property="og:description" content="Web iseng yang akhirnya kepakai: AustinPay, Austin Store, LuciBook, dan AustinPlay." />
+  <meta property="og:image" content="assets/avatar.webp?v=2" />
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23000000' stroke='%232563EB' stroke-width='4'/%3E%3Cpath d='M32 14L48 48H40L36.5 40H27.5L24 48H16L32 14ZM30 34H34L32 29L30 34Z' fill='%233B82F6'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Geist', 'sans-serif'],
+            mono: ['Geist Mono', 'monospace'],
+          },
+          colors: {
+            surface: {
+              0: '#000000',
+              100: '#181818',
+              200: '#1F1F1F',
+              300: '#272727',
+              400: '#313131',
+              warm: '#131209'
+            }
+          },
+          transitionTimingFunction: {
+            'weighted': 'cubic-bezier(0.22, 1, 0.36, 1)',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    * {
+      font-style: normal !important;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000000;
+      color: #FFFFFF;
+      font-family: 'Geist', sans-serif;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      text-wrap: balance;
+    }
+
+    p, li, dd {
+      text-wrap: pretty;
+    }
+
+    .hero-heading-gradient {
+      background: linear-gradient(90deg, #FFFFFF 0%, #9B9B9B 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 700ms cubic-bezier(0.22, 1, 0.36, 1), transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: opacity, transform;
+    }
+
+    .reveal-section.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-word {
+      opacity: 0.28;
+      color: #FFFFFF;
+      transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1), transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+      display: inline-block;
+    }
+
+    .reveal-word.active-word {
+      opacity: 1;
+    }
+
+    .reveal-word.highlight-blue.active-word {
+      color: #3B82F6;
+      opacity: 1;
+    }
+
+    .eq-bar {
+      transform: scaleY(0.25);
+      transform-origin: bottom;
+      transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .is-playing .eq-bar-1 {
+      animation: eqPulse 800ms cubic-bezier(0.22, 1, 0.36, 1) infinite alternate;
+    }
+    .is-playing .eq-bar-2 {
+      animation: eqPulse 600ms cubic-bezier(0.22, 1, 0.36, 1) 150ms infinite alternate;
+    }
+    .is-playing .eq-bar-3 {
+      animation: eqPulse 750ms cubic-bezier(0.22, 1, 0.36, 1) 300ms infinite alternate;
+    }
+
+    @keyframes eqPulse {
+      0% { transform: scaleY(0.25); }
+      100% { transform: scaleY(1); }
+    }
+
+    @keyframes radarWave {
+      0% {
+        transform: scale(0.8);
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(2.4);
+        opacity: 0;
+      }
+    }
+
+    .radar-pulse {
+      animation: radarWave 2200ms cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+
+    .mobile-nav-link {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1), transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .menu-open .mobile-nav-link {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal-section {
+        transform: none !important;
+        transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+      }
+      .mobile-nav-link {
+        transform: none !important;
+      }
+      .radar-pulse,
+      .is-playing .eq-bar-1,
+      .is-playing .eq-bar-2,
+      .is-playing .eq-bar-3 {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-surface-0 text-white antialiased selection:bg-blue-600 selection:text-white">
+
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-3 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold focus:outline-none focus:ring-2 focus:ring-white">
+    Lompat ke konten utama
+  </a>
+
+  <audio id="bg-music" preload="none" loop>
+    <source src="assets/music.mp3?v=1793213920550" type="audio/mpeg" />
+  </audio>
+
+  <header class="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
+    <nav aria-label="Navigasi Utama" class="flex items-center gap-2 sm:gap-6 bg-surface-100/85 backdrop-blur-md border border-surface-400 rounded-2xl px-3 py-2">
+      <a href="#hero" class="flex items-center gap-2 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-weighted hover:bg-surface-200 active:scale-[0.98]">
+        <span class="flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-xs font-bold text-white">A</span>
+        <span class="text-sm font-semibold tracking-tight text-white">Austin Official</span>
+      </a>
+
+      <ul class="hidden md:flex items-center gap-1" id="desktop-nav">
+        <li>
+          <a href="#hero" data-nav="hero" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-white bg-surface-300 transition duration-300 ease-weighted hover:bg-surface-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Beranda
+          </a>
+        </li>
+        <li>
+          <a href="#biodata" data-nav="biodata" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Biodata
+          </a>
+        </li>
+        <li>
+          <a href="#proyek" data-nav="proyek" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Proyek
+          </a>
+        </li>
+        <li>
+          <a href="#alur" data-nav="alur" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Cara kerja
+          </a>
+        </li>
+        <li>
+          <a href="#faq" data-nav="faq" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            FAQ
+          </a>
+        </li>
+      </ul>
+
+      <div class="flex items-center gap-2">
+        <button
+          id="music-toggle"
+          type="button"
+          aria-label="Putar atau jeda musik latar Austin Official"
+          class="flex items-center gap-2 rounded-lg bg-surface-200 border border-surface-400 px-3 py-1 text-sm font-semibold text-neutral-200 transition duration-300 ease-weighted hover:bg-surface-300 hover:border-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <span class="flex items-end gap-0.5 h-3" id="eq-visualizer" aria-hidden="true">
+            <span class="eq-bar eq-bar-1 w-0.5 h-3 bg-blue-500"></span>
+            <span class="eq-bar eq-bar-2 w-0.5 h-3 bg-blue-500"></span>
+            <span class="eq-bar eq-bar-3 w-0.5 h-3 bg-blue-500"></span>
+          </span>
+          <span id="music-label" class="hidden sm:inline text-xs font-mono">Musik</span>
+        </button>
+
+        <a
+          href="#kontak"
+          class="hidden sm:inline-flex items-center gap-1 rounded-lg bg-blue-600 px-3 py-1 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          <span>Hubungi</span>
+        </a>
+
+        <button
+          id="mobile-menu-btn"
+          type="button"
+          aria-expanded="false"
+          aria-controls="mobile-menu-panel"
+          aria-label="Buka menu navigasi"
+          class="md:hidden flex h-8 w-8 items-center justify-center rounded-lg bg-surface-200 border border-surface-400 text-white transition duration-300 ease-weighted hover:bg-surface-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
+        >
+          <span class="relative flex h-4 w-4 flex-col justify-between py-0.5">
+            <span id="burger-line-1" class="block h-0.5 w-4 bg-white transition-transform duration-500 ease-weighted origin-center"></span>
+            <span id="burger-line-2" class="block h-0.5 w-4 bg-white transition-opacity duration-300 ease-weighted"></span>
+            <span id="burger-line-3" class="block h-0.5 w-4 bg-white transition-transform duration-500 ease-weighted origin-center"></span>
+          </span>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <div
+    id="system-toast"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-6 right-6 z-50 pointer-events-none opacity-0 translate-y-4 transition duration-500 ease-weighted bg-surface-200 border border-surface-400 rounded-xl px-4 py-3 text-sm text-neutral-200 flex items-center gap-3"
+  >
+    <i class="ph ph-info text-lg text-blue-400" aria-hidden="true"></i>
+    <span id="system-toast-text">Halo!</span>
+  </div>
+
+  <div
+    id="mobile-menu-panel"
+    aria-hidden="true"
+    class="fixed inset-0 z-40 pointer-events-none opacity-0 transition-opacity duration-500 ease-weighted bg-surface-0/95 backdrop-blur-xl flex flex-col justify-between px-6 pt-24 pb-12"
+  >
+    <ul class="flex flex-col gap-4">
+      <li class="mobile-nav-link" style="transition-delay: 60ms;">
+        <a href="#hero" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Beranda</a>
+      </li>
+      <li class="mobile-nav-link" style="transition-delay: 120ms;">
+        <a href="#biodata" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Biodata</a>
+      </li>
+      <li class="mobile-nav-link" style="transition-delay: 180ms;">
+        <a href="#proyek" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Proyek</a>
+      </li>
+      <li class="mobile-nav-link" style="transition-delay: 240ms;">
+        <a href="#alur" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Cara kerja</a>
+      </li>
+      <li class="mobile-nav-link" style="transition-delay: 300ms;">
+        <a href="#faq" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Tanya-tanya</a>
+      </li>
+      <li class="mobile-nav-link" style="transition-delay: 360ms;">
+        <a href="#kontak" class="mobile-link block rounded-xl bg-blue-600 px-4 py-3 text-2xl font-semibold text-white">Ngobrol yuk</a>
+      </li>
+    </ul>
+
+    <div class="mobile-nav-link border border-surface-300 bg-surface-100 rounded-2xl p-4" style="transition-delay: 400ms;">
+      <p class="text-xs font-mono text-neutral-400">Basecamp</p>
+      <p class="text-sm font-mono text-blue-400 mt-1">Ujung timur Madura</p>
+      <p class="text-xs text-neutral-400 mt-1">Lombang, Sumenep, Jawa Timur</p>
+    </div>
+  </div>
+
+  <main id="main-content">
+
+    <section id="hero" class="pt-24 pb-16 md:pt-24 md:pb-24 px-4 sm:px-6">
+      <div class="max-w-6xl mx-auto pt-8">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-7 flex flex-col items-start gap-6">
+            <div class="inline-flex items-center gap-2 rounded-full bg-surface-100 border border-surface-400 px-3 py-1">
+              <span class="h-2 w-2 rounded-full bg-blue-500"></span>
+              <span class="text-xs text-neutral-300">Muhlis, 23 tahun, anak Madura</span>
+            </div>
+
+            <h1 class="text-white text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight max-w-[680px]">
+              Halo, Austin disini yang suka bikin project iseng-iseng,<br class="hidden sm:inline" />
+              dan sebagian malah kepakai beneran.
+            </h1>
+
+            <p class="text-base sm:text-lg text-neutral-400 max-w-[680px]">
+              Aku Muhlis dari Lombang, Sumenep. Bikin payment gateway, toko top up game, app catatan, sampai pemutar musik tanpa iklan. Kodenya dibantu AI, idenya dan begadangnya dari aku.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-4 pt-2">
+              <a
+                href="#proyek"
+                class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-base font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Lihat hasil iseng-ku</span>
+                <i class="ph ph-arrow-down-right text-lg" aria-hidden="true"></i>
+              </a>
+            </div>
+
+            <div class="grid grid-cols-3 gap-4 pt-4 w-full max-w-[680px]">
+              <div class="rounded-xl bg-surface-100 border border-surface-300 p-3">
+                <p class="text-xl sm:text-2xl font-bold font-mono text-white">4 web</p>
+                <p class="text-xs text-neutral-400 mt-1">yang beneran jalan</p>
+              </div>
+              <div class="rounded-xl bg-surface-100 border border-surface-300 p-3">
+                <p class="text-xl sm:text-2xl font-bold font-mono text-blue-400">2003</p>
+                <p class="text-xs text-neutral-400 mt-1">Lahir di Sumenep</p>
+              </div>
+              <div class="rounded-xl bg-surface-100 border border-surface-300 p-3">
+                <p class="text-xl sm:text-2xl font-bold font-mono text-white">5 akun</p>
+                <p class="text-xs text-neutral-400 mt-1">buat nyapa aku</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5">
+            <div class="rounded-3xl bg-surface-100 border border-surface-400 p-4 transition duration-500 ease-weighted hover:border-blue-600">
+              
+              <div class="rounded-lg bg-surface-200 border border-surface-400 p-3 flex items-center justify-between mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="h-2.5 w-2.5 rounded-full bg-blue-500"></span>
+                  <span class="text-xs font-mono text-neutral-300">kartu_nama.txt</span>
+                </div>
+                <span class="text-xs font-mono text-blue-400 bg-surface-0 px-2 py-0.5 rounded">online</span>
+              </div>
+
+              <div class="rounded-lg bg-surface-200 border border-surface-400 p-4 flex items-center gap-4 mb-4">
+                <div class="relative h-16 w-16 shrink-0 rounded-lg bg-surface-300 border border-blue-500 overflow-hidden flex items-center justify-center">
+                  <img
+                    src="assets/avatar.webp?v=2"
+                    alt="Foto profil Ach Muhlis Austin Official"
+                    class="h-full w-full object-cover"
+                    onerror="this.style.display='none'; document.getElementById('avatar-fallback').style.display='flex';"
+                  />
+                  <div id="avatar-fallback" class="hidden h-full w-full items-center justify-center bg-surface-0 text-blue-400 font-bold text-xl font-mono">
+                    AM
+                  </div>
+                </div>
+                <div>
+                  <h2 class="text-lg font-bold text-white">Ach Muhlis</h2>
+                  <p class="text-sm text-blue-400 font-semibold">Austin Official</p>
+                  <p class="text-xs text-neutral-400 mt-0.5">Developer dibantu AI, 23 tahun, Madura</p>
+                </div>
+              </div>
+
+              <div class="flex flex-col gap-2">
+                <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between">
+                  <span class="text-xs text-neutral-400 flex items-center gap-2">
+                    <i class="ph ph-calendar-blank text-blue-400 text-base" aria-hidden="true"></i>
+                    Tanggal Lahir
+                  </span>
+                  <span class="text-xs font-mono text-white">April 2003</span>
+                </div>
+
+                <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between">
+                  <span class="text-xs text-neutral-400 flex items-center gap-2">
+                    <i class="ph ph-compass text-blue-400 text-base" aria-hidden="true"></i>
+                    Asal
+                  </span>
+                  <span class="text-xs font-mono text-blue-400">Ujung timur Madura</span>
+                </div>
+
+                <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between">
+                  <span class="text-xs text-neutral-400 flex items-center gap-2">
+                    <i class="ph ph-palette text-blue-400 text-base" aria-hidden="true"></i>
+                    Warna Favorit
+                  </span>
+                  <span class="flex items-center gap-2 text-xs font-mono text-white">
+                    <span class="inline-block h-3 w-3 rounded-sm bg-blue-600 border border-white/20"></span> Biru &amp;
+                    <span class="inline-block h-3 w-3 rounded-sm bg-surface-0 border border-neutral-500"></span> Hitam
+                  </span>
+                </div>
+
+                <div class="rounded-lg bg-surface-200 border border-surface-400 p-3 mt-2">
+                  <p class="text-xs font-mono text-neutral-400 mb-1">Motto hidup</p>
+                  <p class="text-sm text-white font-medium">
+                    "Suka coba-coba, walau sering nggak guna."
+                  </p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="filosofi" aria-label="Filosofi Kerja" class="py-20 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
+      <div class="max-w-6xl mx-auto">
+        <p
+          id="tagline-reveal-text"
+          class="text-4xl sm:text-5xl font-bold tracking-tight max-w-[680px]"
+        >
+          Aku suka coba-coba hal yang kadang nggak guna. Tapi dari iseng itulah lahir aplikasi yang beneran jalan.
+        </p>
+      </div>
+    </section>
+
+    <section id="biodata" class="py-20 md:py-24 px-4 sm:px-6">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-white max-w-[680px]">
+            Kenalan dulu sama yang bikin semua ini.
+          </h2>
+          <p class="text-base text-neutral-400 mt-3 max-w-[680px]">
+            Siapa aku, dari mana, dan apa yang bikin betah begadang ngoding.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+
+          <article class="md:col-span-7 rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col justify-between gap-6">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="text-2xl font-bold text-white mt-1">Kenalan singkat</h3>
+              </div>
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-200 border border-surface-400 text-blue-400">
+                <i class="ph ph-user-focus text-xl" aria-hidden="true"></i>
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
+                <p class="text-xs font-mono text-neutral-400">Nama</p>
+                <p class="text-lg font-bold text-white mt-1">Ach Muhlis</p>
+              </div>
+              <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
+                <p class="text-xs font-mono text-neutral-400">Nama toko online</p>
+                <p class="text-lg font-bold text-blue-400 mt-1">Austin Official</p>
+              </div>
+              <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
+                <p class="text-xs font-mono text-neutral-400">Lahir</p>
+                <p class="text-lg font-bold text-white mt-1">April 2003</p>
+              </div>
+              <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
+                <p class="text-xs font-mono text-neutral-400">Kerjaan</p>
+                <p class="text-lg font-bold text-white mt-1">Ngoding bareng AI</p>
+              </div>
+            </div>
+
+            <div class="rounded-xl bg-surface-0 border border-surface-300 p-4 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <p class="text-xs font-mono text-neutral-400">Umurku sampai detik ini</p>
+                <p id="live-age-counter" class="text-sm font-mono text-blue-400 mt-1">23 tahun lebih sedikit</p>
+              </div>
+              <span class="rounded-lg bg-surface-200 border border-surface-400 px-3 py-1 text-xs font-mono text-neutral-300">
+                Aries, katanya keras kepala
+              </span>
+            </div>
+          </article>
+
+          <article class="md:col-span-5 rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col justify-between gap-6">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="text-2xl font-bold text-white mt-1">Lombang, Sumenep</h3>
+              </div>
+              <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-200 border border-surface-400 text-blue-400">
+                <i class="ph ph-map-pin-line text-xl" aria-hidden="true"></i>
+              </span>
+            </div>
+
+            <div class="rounded-xl bg-surface-0 border border-surface-300 overflow-hidden relative">
+              <iframe
+                id="map-frame"
+                title="Peta Lombang, Sumenep, Jawa Timur"
+                src="https://maps.google.com/maps?q=Lombang%2C%20Sumenep%2C%20Jawa%20Timur&amp;hl=id&amp;z=13&amp;output=embed"
+                class="block w-full h-56 sm:h-64 border-0"
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+                allowfullscreen
+              ></iframe>
+              <div class="px-4 py-3 border-t border-surface-300">
+                <p class="text-sm font-mono font-semibold text-white" id="coord-text">Ujung timur Madura</p>
+                <p class="text-xs font-mono text-neutral-400 mt-1">Lombang, Sumenep, Jawa Timur</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <button
+                id="copy-coord-btn"
+                type="button"
+                class="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-surface-200 border border-surface-400 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-surface-300 hover:border-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <i class="ph ph-copy text-base text-blue-400" aria-hidden="true"></i>
+                <span id="copy-coord-label">Salin Lokasi</span>
+              </button>
+              <a
+                href="https://www.google.com/maps/search/Lombang+Sumenep"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Buka Peta</span>
+                <i class="ph ph-arrow-up-right text-base" aria-hidden="true"></i>
+              </a>
+            </div>
+          </article>
+
+          <article class="md:col-span-7 rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col justify-between gap-6">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <h3 class="text-2xl font-bold text-white mt-1">Bensin ngoding</h3>
+              </div>
+              <button
+                id="fuel-combo-btn"
+                type="button"
+                class="inline-flex items-center gap-2 rounded-lg bg-surface-200 border border-surface-400 px-3 py-2 text-sm font-semibold text-blue-400 transition duration-300 ease-weighted hover:bg-surface-300 hover:text-white active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <i class="ph ph-shuffle text-base" aria-hidden="true"></i>
+                <span>Acak Menu Lembur</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
+                <div class="flex items-center gap-2 mb-3">
+                  <i class="ph ph-bowl-food text-blue-400 text-lg" aria-hidden="true"></i>
+                  <h4 class="text-base font-semibold text-white">Makanan Favorit</h4>
+                </div>
+                <ul class="flex flex-col gap-2">
+                  <li data-food="Coklat" class="food-item rounded-lg bg-surface-0 border border-surface-300 px-3 py-2 text-sm text-neutral-200 flex items-center justify-between transition duration-300 ease-weighted">
+                    <span>Coklat</span>
+                    <span class="text-xs font-mono text-blue-400">Obat bete</span>
+                  </li>
+                  <li data-food="Nasi Goreng" class="food-item rounded-lg bg-surface-0 border border-surface-300 px-3 py-2 text-sm text-neutral-200 flex items-center justify-between transition duration-300 ease-weighted">
+                    <span>Nasi Goreng</span>
+                    <span class="text-xs font-mono text-neutral-400">Andalan tengah malam</span>
+                  </li>
+                  <li data-food="Mie Ayam" class="food-item rounded-lg bg-surface-0 border border-surface-300 px-3 py-2 text-sm text-neutral-200 flex items-center justify-between transition duration-300 ease-weighted">
+                    <span>Mie Ayam</span>
+                    <span class="text-xs font-mono text-neutral-400">Nggak pernah salah</span>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
+                <div class="flex items-center gap-2 mb-3">
+                  <i class="ph ph-coffee text-blue-400 text-lg" aria-hidden="true"></i>
+                  <h4 class="text-base font-semibold text-white">Minuman Favorit</h4>
+                </div>
+                <ul class="flex flex-col gap-2">
+                  <li data-drink="Jus Melon" class="drink-item rounded-lg bg-surface-0 border border-surface-300 px-3 py-2 text-sm text-neutral-200 flex items-center justify-between transition duration-300 ease-weighted">
+                    <span>Jus Melon</span>
+                    <span class="text-xs font-mono text-blue-400">Biar adem</span>
+                  </li>
+                  <li data-drink="Josua" class="drink-item rounded-lg bg-surface-0 border border-surface-300 px-3 py-2 text-sm text-neutral-200 flex items-center justify-between transition duration-300 ease-weighted">
+                    <span>Josua</span>
+                    <span class="text-xs font-mono text-neutral-400">Biar melek</span>
+                  </li>
+                  <li data-drink="Es Coklat" class="drink-item rounded-lg bg-surface-0 border border-surface-300 px-3 py-2 text-sm text-neutral-200 flex items-center justify-between transition duration-300 ease-weighted">
+                    <span>Es Coklat</span>
+                    <span class="text-xs font-mono text-neutral-400">Dingin dan manis</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="rounded-xl bg-surface-0 border border-surface-300 p-3 flex items-center justify-between">
+              <span class="text-xs font-mono text-neutral-400">Menu begadang malam ini:</span>
+              <span id="combo-result" class="text-sm font-semibold text-blue-400">Nasi Goreng + Josua</span>
+            </div>
+          </article>
+
+          <article class="md:col-span-5 rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col justify-between gap-6">
+            <div>
+              <h3 class="text-2xl font-bold text-white mt-1">Biru, hitam, dan penasaran</h3>
+              <p class="text-sm text-neutral-400 mt-2">
+                Halaman ini sengaja pakai dua warna kesukaanku: hitam sebagai dasar, biru buat tombol dan sorotan.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3">
+              <div class="rounded-xl bg-blue-600 p-4 border border-blue-400 flex flex-col justify-between h-24">
+                <span class="text-xs font-mono text-white">Favorit 1</span>
+                <span class="text-base font-bold text-white">Biru (#2563EB)</span>
+              </div>
+              <div class="rounded-xl bg-surface-0 p-4 border border-surface-400 flex flex-col justify-between h-24">
+                <span class="text-xs font-mono text-neutral-400">Favorit 2</span>
+                <span class="text-base font-bold text-white">Hitam (#000000)</span>
+              </div>
+            </div>
+
+            <blockquote class="rounded-xl bg-surface-200 border border-surface-400 p-4">
+              <p class="text-xs font-mono text-blue-400 mb-1">Motto hidup (versi aku)</p>
+              <p class="text-base font-semibold text-white">
+                "Suka coba-coba, walau sering nggak guna."
+              </p>
+            </blockquote>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="proyek" class="py-20 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <h2 class="text-3xl sm:text-4xl font-bold text-white max-w-[680px]">
+              Yang sudah jadi: payment gateway, toko top up, app catatan, dan pemutar musik.
+            </h2>
+            <p class="text-base text-neutral-400 mt-3 max-w-[680px]">
+              Semuanya bisa diklik. Kalau ada yang error, kabari ya.
+            </p>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2" role="tablist" aria-label="Filter kategori proyek">
+            <button
+              type="button"
+              data-filter="all"
+              class="project-filter-btn rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              Semua (6)
+            </button>
+            <button
+              type="button"
+              data-filter="app"
+              class="project-filter-btn rounded-lg bg-surface-200 border border-surface-400 px-3 py-2 text-sm font-semibold text-neutral-300 transition duration-300 ease-weighted hover:text-white hover:bg-surface-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              Web (4)
+            </button>
+            <button
+              type="button"
+              data-filter="community"
+              class="project-filter-btn rounded-lg bg-surface-200 border border-surface-400 px-3 py-2 text-sm font-semibold text-neutral-300 transition duration-300 ease-weighted hover:text-white hover:bg-surface-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              Komunitas (2)
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div class="rounded-xl bg-surface-0 border border-surface-300 p-4">
+            <p class="text-sm font-semibold text-white">Buat bayar dan top up</p>
+            <p class="text-xs text-neutral-400 mt-1">AustinPay buat terima pembayaran, Austin Store buat top up game dan layanan digital.</p>
+          </div>
+          <div class="rounded-xl bg-surface-0 border border-surface-300 p-4">
+            <p class="text-sm font-semibold text-white">Buat nyatet dan dengerin musik</p>
+            <p class="text-xs text-neutral-400 mt-1">Catat apa saja di LuciBook, sambil dengerin lagu tanpa iklan di AustinPlay.</p>
+          </div>
+          <div class="rounded-xl bg-surface-0 border border-surface-300 p-4">
+            <p class="text-sm font-semibold text-white">Mau ngobrol?</p>
+            <p class="text-xs text-neutral-400 mt-1">Kabar terbaru dan obrolan santai ada di Channel dan Group WhatsApp Austin.</p>
+          </div>
+        </div>
+
+        <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          </div>
+
+        <div id="projects-empty" class="hidden rounded-2xl bg-surface-0 border border-surface-400 p-8 text-center">
+          <p class="text-lg font-bold text-white">Di kategori ini masih kosong.</p>
+          <p class="text-sm text-neutral-400 mt-2">Balik ke semua proyek, di sana ada empat web dan dua komunitas.</p>
+          <button
+            type="button"
+            id="reset-filter-btn"
+            class="mt-4 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98]"
+          >
+            <span>Tampilkan semua</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="alur" class="py-20 md:py-24 px-4 sm:px-6">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-white max-w-[680px]">
+            Cara kerjaku: penasaran, minta bantu AI, rilis.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col justify-between gap-6">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono text-blue-400 bg-surface-200 border border-surface-400 px-3 py-1 rounded-lg">Tahap 1</span>
+              <i class="ph ph-flask text-2xl text-blue-400" aria-hidden="true"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">Penasaran dulu</h3>
+              <p class="text-sm text-neutral-400 mt-2">
+                Biasanya mulai dari ide iseng. Kadang kelihatan receh, tetap kucoba.
+              </p>
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col justify-between gap-6">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono text-blue-400 bg-surface-200 border border-surface-400 px-3 py-1 rounded-lg">Tahap 2</span>
+              <i class="ph ph-lightning text-2xl text-blue-400" aria-hidden="true"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">Minta bantu AI</h3>
+              <p class="text-sm text-neutral-400 mt-2">
+                Nulis kode, ngetes fitur, dan ngerapiin tampilan jadi jauh lebih cepat dengan bantuan AI. Idenya tetap dari aku.
+              </p>
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col justify-between gap-6">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono text-blue-400 bg-surface-200 border border-surface-400 px-3 py-1 rounded-lg">Tahap 3</span>
+              <i class="ph ph-rocket-launch text-2xl text-blue-400" aria-hidden="true"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">Rilis, lalu dengar kata orang</h3>
+              <p class="text-sm text-neutral-400 mt-2">
+                Naik ke domain publik seperti mymarket.id atau austinplay.vercel.app, lalu ngobrol sama komunitas di WhatsApp.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="sosial" class="py-20 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
+      <div class="max-w-6xl mx-auto">
+        
+        <div class="mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-white max-w-[680px]">
+            Cari aku di sini.
+          </h2>
+          <p class="text-base text-neutral-400 mt-3 max-w-[680px]">
+            Pilih yang paling enak buat kamu.
+          </p>
+        </div>
+
+        <div id="socials-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          </div>
+
+      </div>
+    </section>
+
+    <section id="faq" class="py-20 md:py-24 px-4 sm:px-6">
+      <div class="max-w-4xl mx-auto">
+        
+        <div class="mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-white max-w-[680px]">
+            Pertanyaan yang sering muncul (atau yang kukira bakal muncul)
+          </h2>
+        </div>
+
+        <div class="flex flex-col gap-4" id="faq-container">
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-4">
+            <button type="button" class="faq-trigger w-full flex items-center justify-between text-left gap-4 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="true">
+              <span class="text-lg font-semibold text-white">Austin Official itu siapa sih?</span>
+              <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted rotate-180" aria-hidden="true"></i>
+            </button>
+            <div class="faq-content px-2 pt-2 pb-1 text-sm text-neutral-300">
+              Aku, Ach Muhlis. 23 tahun, tinggal di Lombang, Sumenep, dan ngoding dibantu AI.
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-4">
+            <button type="button" class="faq-trigger w-full flex items-center justify-between text-left gap-4 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="false">
+              <span class="text-lg font-semibold text-white">Apa saja yang sudah kamu bikin?</span>
+              <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted" aria-hidden="true"></i>
+            </button>
+            <div class="faq-content hidden px-2 pt-2 pb-1 text-sm text-neutral-300">
+              Empat web: AustinPay (austinx.cloud) buat payment gateway, Austin Store (mymarket.id) buat top up game dan layanan digital, LuciBook (lucibook.my.id) buat nyatet, dan AustinPlay (austinplay.vercel.app) buat dengerin musik tanpa iklan.
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-4">
+            <button type="button" class="faq-trigger w-full flex items-center justify-between text-left gap-4 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="false">
+              <span class="text-lg font-semibold text-white">Tinggalnya di mana?</span>
+              <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted" aria-hidden="true"></i>
+            </button>
+            <div class="faq-content hidden px-2 pt-2 pb-1 text-sm text-neutral-300">
+              Di Lombang, Sumenep, ujung timur Pulau Madura. Alamat lengkapnya rahasia dulu ya.
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-4">
+            <button type="button" class="faq-trigger w-full flex items-center justify-between text-left gap-4 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="false">
+              <span class="text-lg font-semibold text-white">Makanan, minuman, dan warna favoritnya?</span>
+              <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted" aria-hidden="true"></i>
+            </button>
+            <div class="faq-content hidden px-2 pt-2 pb-1 text-sm text-neutral-300">
+              Coklat, nasi goreng, mie ayam. Minumnya jus melon, Josua, es coklat. Warnanya biru dan hitam, kelihatan kan dari halaman ini.
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-4">
+            <button type="button" class="faq-trigger w-full flex items-center justify-between text-left gap-4 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="false">
+              <span class="text-lg font-semibold text-white">Kok suka coba-coba hal nggak guna?</span>
+              <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted" aria-hidden="true"></i>
+            </button>
+            <div class="faq-content hidden px-2 pt-2 pb-1 text-sm text-neutral-300">
+              Soalnya dari iseng-iseng itulah proyek berikutnya sering lahir. Gagal ya nggak apa-apa, namanya juga coba-coba.
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-4">
+            <button type="button" class="faq-trigger w-full flex items-center justify-between text-left gap-4 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="false">
+              <span class="text-lg font-semibold text-white">Gimana cara ngobrol atau gabung komunitas?</span>
+              <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted" aria-hidden="true"></i>
+            </button>
+            <div class="faq-content hidden px-2 pt-2 pb-1 text-sm text-neutral-300">
+              Ikut Channel atau Group WhatsApp Austin Official, atau chat langsung ke WhatsApp +62 851 1362 8383 atau Telegram @austinoffc1.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section id="kontak" class="py-20 md:py-24 px-4 sm:px-6 bg-surface-100 border border-surface-300">
+      <div class="max-w-5xl mx-auto">
+        <div class="rounded-3xl bg-surface-0 border border-surface-400 p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          
+          <div class="lg:col-span-6 flex flex-col items-start gap-4">
+            <h2 class="text-3xl sm:text-4xl font-bold text-white max-w-[680px]">
+              Punya ide atau mau tanya-tanya? Chat aja.
+            </h2>
+            <p class="text-base text-neutral-400 max-w-[680px]">
+              Tanya-tanya ide awal gratis, tanpa ikatan. Isi form di samping, nanti WhatsApp-ku kebuka. Atau lihat-lihat proyek dulu.
+            </p>
+            <div class="pt-2 flex flex-wrap items-center gap-3">
+              <a
+                href="#proyek"
+                class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-base font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Lihat hasil iseng-ku</span>
+                <i class="ph ph-arrow-up-right text-lg" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6">
+            <form id="contact-form" novalidate class="rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col gap-4">
+              <h3 class="text-lg font-bold text-white">Kirim pesan ke aku</h3>
+
+              <div>
+                <label for="sender-name" class="block text-xs font-mono text-neutral-300 mb-1">Namamu</label>
+                <input
+                  type="text"
+                  id="sender-name"
+                  name="name"
+                  required
+                  placeholder="Nama kamu"
+                  class="w-full rounded-lg bg-surface-0 border border-surface-400 px-3 py-2 text-sm text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <p id="error-name" class="hidden text-xs text-red-400 mt-1">Namanya diisi dulu ya.</p>
+              </div>
+
+              <div>
+                <label for="sender-email" class="block text-xs font-mono text-neutral-300 mb-1">Email</label>
+                <input
+                  type="email"
+                  id="sender-email"
+                  name="email"
+                  required
+                  placeholder="nama@domain.com"
+                  class="w-full rounded-lg bg-surface-0 border border-surface-400 px-3 py-2 text-sm text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <p id="error-email" class="hidden text-xs text-red-400 mt-1">Emailnya kayaknya belum bener. Contoh: nama@domain.com</p>
+              </div>
+
+              <div>
+                <label for="sender-message" class="block text-xs font-mono text-neutral-300 mb-1">Mau bilang apa?</label>
+                <textarea
+                  id="sender-message"
+                  name="message"
+                  rows="3"
+                  required
+                  placeholder="Ide, pertanyaan, atau sekadar sapaan juga boleh"
+                  class="w-full rounded-lg bg-surface-0 border border-surface-400 px-3 py-2 text-sm text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                ></textarea>
+                <p id="error-message" class="hidden text-xs text-red-400 mt-1">Pesannya masih kosong, satu kalimat aja cukup.</p>
+              </div>
+
+              <button
+                type="submit"
+                class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-base font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <i class="ph ph-whatsapp-logo text-lg" aria-hidden="true"></i>
+                <span>Kirim lewat WhatsApp</span>
+              </button>
+
+              <p id="form-success" class="hidden text-xs text-blue-400 font-mono">
+                Oke, membuka WhatsApp...
+              </p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="bg-surface-0 py-12 px-4 sm:px-6">
+    <div class="max-w-6xl mx-auto rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-xs font-bold text-white">A</span>
+          <span class="text-base font-bold text-white">Ach Muhlis • Austin Official</span>
+        </div>
+        <p class="text-xs text-neutral-400 mt-1">
+          Lombang, Sumenep, Jawa Timur
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-4 text-xs text-neutral-400">
+        <button type="button" id="open-privacy" class="hover:text-white underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1">
+          Soal privasi
+        </button>
+        <button type="button" id="open-terms" class="hover:text-white underline focus:outline-none focus:ring-2 focus:ring-blue-500 rounded px-1">
+          Aturan main
+        </button>
+        <a href="#hero" class="inline-flex items-center gap-1 rounded-lg bg-surface-200 border border-surface-400 px-3 py-1.5 text-xs font-semibold text-white hover:bg-surface-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <span>Ke atas</span>
+          <i class="ph ph-arrow-up" aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="info-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" class="fixed inset-0 z-50 hidden items-center justify-center bg-surface-0/80 backdrop-blur-md p-4">
+    <div class="max-w-lg w-full rounded-2xl bg-surface-100 border border-surface-400 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 id="modal-title" class="text-xl font-bold text-white">Informasi Resmi</h3>
+        <button type="button" id="close-modal" class="rounded-lg bg-surface-200 border border-surface-400 px-3 py-1 text-sm font-semibold text-white hover:bg-surface-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          Tutup
+        </button>
+      </div>
+      <p id="modal-body" class="text-sm text-neutral-300"></p>
+    </div>
+  </div>
+
+  <script>
+    const portfolioData = {
+      name: "Austin Official",
+      fullName: "Ach Muhlis",
+      birthDate: "2003-04-06",
+      info: "AI-assisted developer, 23 tahun, Madura",
+      tagline: "Beberapa project saya: payment gateway, marketplace, catatan, dan musik.",
+      avatar: "assets/avatar.webp?v=2",
+      music: "assets/music.mp3?v=1793213920550",
+      links: [
+        {
+          title: "AustinPay",
+          desc: "Website payment gateway",
+          url: "https://austinx.cloud",
+          domain: "austinx.cloud",
+          logo: "assets/austinpay.webp",
+          category: "app",
+          phIcon: "ph-wallet"
+        },
+        {
+          title: "Austin Store",
+          desc: "Marketplace top up semua game & layanan digital lengkap",
+          url: "https://mymarket.id",
+          domain: "mymarket.id",
+          logo: "assets/mymarket.webp",
+          category: "app",
+          phIcon: "ph-shopping-bag"
+        },
+        {
+          title: "LuciBook",
+          desc: "Website catatan, catat apa saja dimana saja",
+          url: "https://lucibook.my.id",
+          domain: "lucibook.my.id",
+          logo: "assets/lucibook.webp",
+          category: "app",
+          phIcon: "ph-book-open-text"
+        },
+        {
+          title: "AustinPlay",
+          desc: "Website musik tanpa iklan",
+          url: "https://austinplay.vercel.app",
+          domain: "austinplay.vercel.app",
+          logo: "assets/austinplay.webp",
+          category: "app",
+          phIcon: "ph-music-notes"
+        },
+        {
+          title: "Channel Austin Official",
+          desc: "Channel informasi Austin di WhatsApp",
+          url: "https://whatsapp.com/channel/0029VbAYbLc7tkizhltuyV1b",
+          domain: "whatsapp.com/channel",
+          category: "community",
+          phIcon: "ph-megaphone"
+        },
+        {
+          title: "Group Community",
+          desc: "Group community & informasi Austin",
+          url: "https://chat.whatsapp.com/CTzGwCpgWD65QuLkIicc89",
+          domain: "chat.whatsapp.com",
+          category: "community",
+          phIcon: "ph-users-three"
+        }
+      ],
+      socials: [
+        {
+          label: "WhatsApp",
+          handle: "+62 851 1362 8383",
+          phIcon: "ph-whatsapp-logo",
+          url: "https://wa.me/6285113628383"
+        },
+        {
+          label: "TikTok",
+          handle: "@austin_store1",
+          phIcon: "ph-tiktok-logo",
+          url: "https://tiktok.com/@austin_store1"
+        },
+        {
+          label: "Instagram",
+          handle: "@_austin.official",
+          phIcon: "ph-instagram-logo",
+          url: "https://instagram.com/_austin.official"
+        },
+        {
+          label: "Facebook",
+          handle: "AustiinGriffin",
+          phIcon: "ph-facebook-logo",
+          url: "https://www.facebook.com/AustiinGriffin"
+        },
+        {
+          label: "Telegram",
+          handle: "@austinoffc1",
+          phIcon: "ph-telegram-logo",
+          url: "https://t.me/austinoffc1"
+        }
+      ]
+    };
+
+    let toastTimer = null;
+    function showSystemToast(message) {
+      const toast = document.getElementById('system-toast');
+      const text = document.getElementById('system-toast-text');
+      text.textContent = message;
+      toast.classList.remove('opacity-0', 'translate-y-4');
+      toast.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('opacity-100', 'translate-y-0');
+        toast.classList.add('opacity-0', 'translate-y-4');
+      }, 3200);
+    }
+
+    const projectsGrid = document.getElementById('projects-grid');
+    const projectsEmpty = document.getElementById('projects-empty');
+
+    function renderSkeletons() {
+      projectsGrid.innerHTML = Array.from({ length: 6 }).map(() => `
+        <div class="rounded-2xl bg-surface-0 border border-surface-300 p-4 animate-pulse">
+          <div class="h-10 w-10 rounded-lg bg-surface-200 mb-4"></div>
+          <div class="h-5 w-1/2 rounded bg-surface-200 mb-2"></div>
+          <div class="h-4 w-3/4 rounded bg-surface-200 mb-6"></div>
+          <div class="h-8 w-full rounded-lg bg-surface-200"></div>
+        </div>
+      `).join('');
+    }
+
+    function renderProjects(filter = 'all') {
+      const filtered = filter === 'all'
+        ? portfolioData.links
+        : portfolioData.links.filter(item => item.category === filter);
+
+      if (filtered.length === 0) {
+        projectsGrid.innerHTML = '';
+        projectsEmpty.classList.remove('hidden');
+        return;
+      }
+
+      projectsEmpty.classList.add('hidden');
+      projectsGrid.innerHTML = filtered.map(item => `
+        <article class="rounded-2xl bg-surface-0 border border-surface-400 p-2 flex flex-col justify-between transition duration-300 ease-weighted hover:border-blue-500 hover:-translate-y-1">
+          <div class="rounded-lg bg-surface-200 border border-surface-300 p-4 flex-1 flex flex-col justify-between gap-4">
+            <div class="flex items-start justify-between gap-3">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-0 border border-surface-400 text-blue-400">
+                ${item.logo
+                  ? `<img src="${item.logo}" alt="Logo ${item.title}" width="48" height="48" loading="lazy" decoding="async" class="h-full w-full object-cover" onerror="this.outerHTML='<i class=&quot;ph ${item.phIcon} text-xl&quot; aria-hidden=&quot;true&quot;></i>'" />`
+                  : `<i class="ph ${item.phIcon} text-xl" aria-hidden="true"></i>`}
+              </span>
+              <span class="text-xs font-mono text-neutral-400 bg-surface-0 border border-surface-400 px-2 py-1 rounded">
+                ${item.domain}
+              </span>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">${item.title}</h3>
+              <p class="text-sm text-neutral-400 mt-1">${item.desc}</p>
+            </div>
+            <div class="pt-2">
+              <a
+                href="${item.url}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full inline-flex items-center justify-between rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Buka ${item.title}</span>
+                <i class="ph ph-arrow-up-right text-base" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    renderSkeletons();
+    setTimeout(() => renderProjects('all'), 220);
+
+    const filterBtns = document.querySelectorAll('.project-filter-btn');
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => {
+          b.className = 'project-filter-btn rounded-lg bg-surface-200 border border-surface-400 px-3 py-2 text-sm font-semibold text-neutral-300 transition duration-300 ease-weighted hover:text-white hover:bg-surface-300 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400';
+        });
+        btn.className = 'project-filter-btn rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400';
+        renderProjects(btn.getAttribute('data-filter'));
+      });
+    });
+
+    document.getElementById('reset-filter-btn').addEventListener('click', () => {
+      filterBtns[0].click();
+    });
+
+    const socialsGrid = document.getElementById('socials-grid');
+    socialsGrid.innerHTML = portfolioData.socials.map(soc => `
+      <a
+        href="${soc.url}"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="rounded-2xl bg-surface-0 border border-surface-400 p-4 flex flex-col justify-between gap-4 transition duration-300 ease-weighted hover:border-blue-500 hover:-translate-y-1 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        <div class="flex items-center justify-between">
+          <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-surface-200 border border-surface-400 text-blue-400">
+            <i class="ph ${soc.phIcon} text-xl" aria-hidden="true"></i>
+          </span>
+          <i class="ph ph-arrow-up-right text-neutral-400" aria-hidden="true"></i>
+        </div>
+        <div>
+          <p class="text-base font-bold text-white">${soc.label}</p>
+          <p class="text-xs font-mono text-neutral-400 mt-0.5">${soc.handle}</p>
+        </div>
+      </a>
+    `).join('');
+
+    const taglineEl = document.getElementById('tagline-reveal-text');
+    const rawWords = taglineEl.textContent.trim().split(/\s+/);
+    const blueKeywords = new Set(['coba-coba', 'iseng', 'aplikasi', 'jalan.']);
+
+    taglineEl.innerHTML = rawWords.map(word => {
+      const isBlue = blueKeywords.has(word.toLowerCase());
+      return `<span class="reveal-word ${isBlue ? 'highlight-blue' : ''} mr-2">${word}</span>`;
+    }).join(' ');
+
+    const wordSpans = Array.from(taglineEl.querySelectorAll('.reveal-word'));
+    let ticking = false;
+
+    function updateTaglineWords() {
+      const viewportHeight = window.innerHeight;
+      const triggerLine = viewportHeight * 0.72;
+
+      wordSpans.forEach(span => {
+        const rect = span.getBoundingClientRect();
+        if (rect.top < triggerLine) {
+          span.classList.add('active-word');
+        } else {
+          span.classList.remove('active-word');
+        }
+      });
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateTaglineWords);
+        ticking = true;
+      }
+    }, { passive: true });
+    updateTaglineWords();
+
+    const revealSections = document.querySelectorAll('.reveal-section');
+    const sectionObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    revealSections.forEach(sec => sectionObserver.observe(sec));
+
+    const trackedSections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-item');
+    const navObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            if (link.getAttribute('data-nav') === id) {
+              link.className = 'nav-item rounded-lg px-3 py-1 text-sm font-semibold text-white bg-surface-300 transition duration-300 ease-weighted focus:outline-none focus:ring-2 focus:ring-blue-500';
+            } else if (link.getAttribute('data-nav')) {
+              link.className = 'nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500';
+            }
+          });
+        }
+      });
+    }, { threshold: 0.35 });
+
+    trackedSections.forEach(sec => navObserver.observe(sec));
+
+    function updatePrecisionAge() {
+      const birth = new Date('2003-04-06T00:00:00');
+      const now = new Date();
+      let years = now.getFullYear() - birth.getFullYear();
+      let months = now.getMonth() - birth.getMonth();
+      let days = now.getDate() - birth.getDate();
+
+      if (days < 0) {
+        months -= 1;
+        days += 30;
+      }
+      if (months < 0) {
+        years -= 1;
+        months += 12;
+      }
+      const ageEl = document.getElementById('live-age-counter');
+      if (ageEl) {
+        ageEl.textContent = `${years} tahun, ${months} bulan, ${days} hari`;
+      }
+    }
+    updatePrecisionAge();
+
+    const foods = ['Coklat', 'Nasi Goreng', 'Mie Ayam'];
+    const drinks = ['Jus Melon', 'Josua', 'Es Coklat'];
+    const fuelBtn = document.getElementById('fuel-combo-btn');
+    const comboResult = document.getElementById('combo-result');
+    const foodItems = document.querySelectorAll('.food-item');
+    const drinkItems = document.querySelectorAll('.drink-item');
+
+    fuelBtn.addEventListener('click', () => {
+      const pickedFood = foods[Math.floor(Math.random() * foods.length)];
+      const pickedDrink = drinks[Math.floor(Math.random() * drinks.length)];
+      comboResult.textContent = `${pickedFood} + ${pickedDrink}`;
+
+      foodItems.forEach(el => {
+        if (el.getAttribute('data-food') === pickedFood) {
+          el.classList.add('border-blue-500', 'bg-surface-100');
+        } else {
+          el.classList.remove('border-blue-500', 'bg-surface-100');
+        }
+      });
+
+      drinkItems.forEach(el => {
+        if (el.getAttribute('data-drink') === pickedDrink) {
+          el.classList.add('border-blue-500', 'bg-surface-100');
+        } else {
+          el.classList.remove('border-blue-500', 'bg-surface-100');
+        }
+      });
+
+      showSystemToast(`Malam ini: ${pickedFood} + ${pickedDrink}. Gaskeun.`);
+    });
+
+    const copyBtn = document.getElementById('copy-coord-btn');
+    const copyLabel = document.getElementById('copy-coord-label');
+    copyBtn.addEventListener('click', async () => {
+      const coordString = `Lombang, Sumenep, Jawa Timur`;
+      try {
+        await navigator.clipboard.writeText(coordString);
+        copyLabel.textContent = 'Udah kesalin';
+        showSystemToast('Lokasi udah kesalin.');
+        setTimeout(() => {
+          copyLabel.textContent = 'Salin Lokasi';
+        }, 2500);
+      } catch (err) {
+        showSystemToast('Gagal menyalin, salin manual aja ya.');
+      }
+    });
+
+    const audioEl = document.getElementById('bg-music');
+    const musicToggle = document.getElementById('music-toggle');
+    const musicLabel = document.getElementById('music-label');
+    const eqVisualizer = document.getElementById('eq-visualizer');
+    let isPlaying = false;
+
+    musicToggle.addEventListener('click', () => {
+      if (!isPlaying) {
+        audioEl.play().then(() => {
+          isPlaying = true;
+          eqVisualizer.classList.add('is-playing');
+          musicLabel.textContent = 'Nyala';
+          showSystemToast('Musik nyala. Volume jangan kenceng-kenceng ya.');
+        }).catch(() => {
+          showSystemToast('Musik gagal diputar. Cek file assets/music.mp3.');
+        });
+      } else {
+        audioEl.pause();
+        isPlaying = false;
+        eqVisualizer.classList.remove('is-playing');
+        musicLabel.textContent = 'Jeda';
+        showSystemToast('Musik berhenti.');
+      }
+    });
+
+    const mobileBtn = document.getElementById('mobile-menu-btn');
+    const mobilePanel = document.getElementById('mobile-menu-panel');
+    const line1 = document.getElementById('burger-line-1');
+    const line2 = document.getElementById('burger-line-2');
+    const line3 = document.getElementById('burger-line-3');
+    let menuOpen = false;
+
+    function toggleMobileMenu() {
+      menuOpen = !menuOpen;
+      mobileBtn.setAttribute('aria-expanded', String(menuOpen));
+      mobilePanel.setAttribute('aria-hidden', String(!menuOpen));
+
+      if (menuOpen) {
+        mobilePanel.classList.remove('pointer-events-none', 'opacity-0');
+        mobilePanel.classList.add('pointer-events-auto', 'opacity-100', 'menu-open');
+        line1.style.transform = 'translateY(5px) rotate(45deg)';
+        line2.style.opacity = '0';
+        line3.style.transform = 'translateY(-5px) rotate(-45deg)';
+      } else {
+        mobilePanel.classList.add('pointer-events-none', 'opacity-0');
+        mobilePanel.classList.remove('pointer-events-auto', 'opacity-100', 'menu-open');
+        line1.style.transform = 'none';
+        line2.style.opacity = '1';
+        line3.style.transform = 'none';
+      }
+    }
+
+    mobileBtn.addEventListener('click', toggleMobileMenu);
+    document.querySelectorAll('.mobile-link').forEach(link => {
+      link.addEventListener('click', () => {
+        if (menuOpen) toggleMobileMenu();
+      });
+    });
+
+    document.querySelectorAll('.faq-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const content = trigger.nextElementSibling;
+        const icon = trigger.querySelector('i');
+        const expanded = trigger.getAttribute('aria-expanded') === 'true';
+
+        trigger.setAttribute('aria-expanded', String(!expanded));
+        content.classList.toggle('hidden');
+        icon.classList.toggle('rotate-180');
+      });
+    });
+
+    const contactForm = document.getElementById('contact-form');
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nameInput = document.getElementById('sender-name');
+      const emailInput = document.getElementById('sender-email');
+      const msgInput = document.getElementById('sender-message');
+
+      const errName = document.getElementById('error-name');
+      const errEmail = document.getElementById('error-email');
+      const errMsg = document.getElementById('error-message');
+      const successMsg = document.getElementById('form-success');
+
+      let valid = true;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (!nameInput.value.trim()) {
+        errName.classList.remove('hidden');
+        valid = false;
+      } else {
+        errName.classList.add('hidden');
+      }
+
+      if (!emailRegex.test(emailInput.value.trim())) {
+        errEmail.classList.remove('hidden');
+        valid = false;
+      } else {
+        errEmail.classList.add('hidden');
+      }
+
+      if (!msgInput.value.trim()) {
+        errMsg.classList.remove('hidden');
+        valid = false;
+      } else {
+        errMsg.classList.add('hidden');
+      }
+
+      if (!valid) return;
+
+      successMsg.classList.remove('hidden');
+      const text = `Halo Muhlis, aku ${nameInput.value.trim()} (${emailInput.value.trim()}). ${msgInput.value.trim()}`;
+      const waUrl = `https://wa.me/6285113628383?text=${encodeURIComponent(text)}`;
+      window.open(waUrl, '_blank', 'noopener,noreferrer');
+    });
+
+    const modal = document.getElementById('info-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const closeModal = document.getElementById('close-modal');
+
+    document.getElementById('open-privacy').addEventListener('click', () => {
+      modalTitle.textContent = 'Soal privasi';
+      modalBody.textContent = 'Halaman ini nggak nyimpen data kamu. Form cuma ngecek isian di browser lalu langsung membuka WhatsApp.';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+
+    document.getElementById('open-terms').addEventListener('click', () => {
+      modalTitle.textContent = 'Aturan mainnya';
+      modalBody.textContent = 'AustinPay, Austin Store, LuciBook, dan AustinPlay dikelola Ach Muhlis. Tiap web punya aturan transaksi dan komunitasnya sendiri, cek di masing-masing situs.';
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+
+    closeModal.addEventListener('click', () => {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    });
+  </script>
+</body>
+</html>
