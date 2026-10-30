@@ -23,7 +23,11 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Muhlis | Austin Official" />
   <meta property="og:description" content="Web iseng yang akhirnya kepakai: AustinPay, Austin Store, LuciBook, dan AustinPlay." />
-  <meta property="og:image" content="assets/avatar.webp?v=2" />
+  <meta property="og:image" content="assets/og-image.jpg?v=1" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="assets/og-image.jpg?v=1" />
 
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
   <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png?v=3" />
@@ -200,15 +204,49 @@
     .rv-in[data-rv="zoom"]  { animation-name: rv-zoom; animation-duration: 800ms; }
     .rv-in[data-rv="fade"]  { animation-name: rv-fade; animation-duration: 700ms; }
     .rv-in[data-rv="kid"]   { animation-name: rv-kid; animation-duration: 700ms; }
-    .rv-in[data-rv-instant] { animation: none; }
 
-    @keyframes rv-up    { from { opacity: 0; translate: 0 40px;  filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
-    @keyframes rv-blur  { from { opacity: 0; translate: 0 28px;  filter: blur(14px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
-    @keyframes rv-left  { from { opacity: 0; translate: -56px 0; filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
-    @keyframes rv-right { from { opacity: 0; translate: 56px 0;  filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
-    @keyframes rv-zoom  { from { opacity: 0; translate: 0 24px; scale: 0.9; filter: blur(4px); } to { opacity: 1; translate: 0 0; scale: 1; filter: blur(0); } }
+    /* Animasi dua arah: elemen muncul lagi setiap kali masuk layar (scroll ke bawah ATAU ke atas)
+       dan di-reset saat keluar layar. --rv-s = 1 kalau masuk dari bawah, -1 kalau masuk dari atas
+       (jadi saat scroll ke atas, elemen meluncur turun dari atas). */
+    @keyframes rv-up    { from { opacity: 0; translate: 0 calc(40px * var(--rv-s, 1));  filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+    @keyframes rv-blur  { from { opacity: 0; translate: 0 calc(28px * var(--rv-s, 1));  filter: blur(14px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+    @keyframes rv-left  { from { opacity: 0; translate: -56px calc(14px * var(--rv-s, 1)); filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+    @keyframes rv-right { from { opacity: 0; translate: 56px calc(14px * var(--rv-s, 1));  filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+    @keyframes rv-zoom  { from { opacity: 0; translate: 0 calc(24px * var(--rv-s, 1)); scale: 0.9; filter: blur(4px); } to { opacity: 1; translate: 0 0; scale: 1; filter: blur(0); } }
     @keyframes rv-fade  { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes rv-kid   { from { opacity: 0; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
+    @keyframes rv-kid   { from { opacity: 0; translate: 0 calc(18px * var(--rv-s, 1)); } to { opacity: 1; translate: 0 0; } }
+
+    /* ===== Foto: bingkai ala viewfinder kamera ===== */
+    .frame { position: relative; isolation: isolate; }
+    .frame > img { transition: transform 900ms var(--ease-out), filter 600ms var(--ease-out); }
+    .frame:hover > img { transform: scale(1.035); }
+    .frame::before,
+    .frame::after { content: ''; position: absolute; width: 26px; height: 26px; pointer-events: none; z-index: 3; border: 2px solid #3B82F6; opacity: .9; transition: all 500ms var(--ease-out); }
+    .frame::before { top: 12px; left: 12px; border-right: 0; border-bottom: 0; border-top-left-radius: 8px; }
+    .frame::after  { top: 12px; right: 12px; border-left: 0; border-bottom: 0; border-top-right-radius: 8px; }
+    .frame:hover::before { top: 8px; left: 8px; width: 34px; height: 34px; }
+    .frame:hover::after  { top: 8px; right: 8px; width: 34px; height: 34px; }
+    .frame--clean::before, .frame--clean::after { display: none; }
+    .frame .tint { position: absolute; inset: 0; z-index: 1; pointer-events: none; opacity: 0; background: linear-gradient(160deg, rgba(37, 99, 235, .45), rgba(37, 99, 235, 0) 60%); mix-blend-mode: soft-light; transition: opacity 600ms var(--ease-out); }
+    .frame:hover .tint { opacity: 1; }
+    .photo-par { will-change: transform; transform: translate3d(0, calc(var(--py, 0) * 1px), 0) scale(1.12); }
+    .frame:hover > .photo-par { transform: translate3d(0, calc(var(--py, 0) * 1px), 0) scale(1.16); }
+    .glass-chip { background: rgba(10, 10, 10, .62); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, .12); }
+    .gallery-glow { position: absolute; border-radius: 9999px; pointer-events: none; filter: blur(70px); background: radial-gradient(circle, rgba(37, 99, 235, .28), transparent 68%); }
+
+    /* ===== Countdown ulang tahun ===== */
+    .cd-cell { position: relative; overflow: hidden; }
+    .cd-num { display: inline-block; font-variant-numeric: tabular-nums; }
+    .cd-num.tick { animation: cd-tick 420ms var(--ease-out); }
+    @keyframes cd-tick { from { opacity: 0; translate: 0 -55%; filter: blur(3px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+    .cd-bar { transform-origin: 0 50%; transform: scaleX(var(--cd, 0)); transition: transform 900ms var(--ease-out); }
+    .cd-party .cd-cell { border-color: rgba(59, 130, 246, .7); animation: cd-glow 1800ms ease-in-out infinite alternate; }
+    @keyframes cd-glow { from { box-shadow: 0 0 0 rgba(59, 130, 246, 0); } to { box-shadow: 0 0 28px rgba(59, 130, 246, .45); } }
+
+    /* ===== Lightbox foto ===== */
+    #lightbox { visibility: hidden; transition: opacity 300ms var(--ease-out), visibility 0s linear 300ms; }
+    #lightbox.is-open { visibility: visible; opacity: 1; pointer-events: auto; transition-delay: 0s; }
+    #lightbox img { transition: opacity 250ms var(--ease-out), transform 400ms var(--ease-out); }
 
     /* Garis aksen biru di bawah judul section, "tergambar" saat judul muncul */
     .js h2[data-rv]::after {
@@ -289,6 +327,9 @@
       #scroll-progress { display: none; }
       header > nav { animation: none; }
       .hero-glow { animation: none; translate: none; }
+      .photo-par { transform: scale(1.04) !important; }
+      .cd-num.tick, .cd-party .cd-cell { animation: none; }
+      .frame > img, .cd-bar { transition: none; }
     }
   </style>
 </head>
@@ -305,35 +346,40 @@
   </audio>
 
   <header class="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
-    <nav aria-label="Navigasi Utama" class="flex items-center gap-2 sm:gap-6 bg-surface-100/85 backdrop-blur-md border border-surface-400 rounded-2xl px-3 py-2">
+    <nav aria-label="Navigasi Utama" class="flex items-center gap-2 md:gap-3 lg:gap-6 bg-surface-100/85 backdrop-blur-md border border-surface-400 rounded-2xl px-3 py-2">
       <a href="#hero" class="flex items-center gap-2 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-weighted hover:bg-surface-200 active:scale-[0.98]">
         <img src="assets/logo.webp?v=3" alt="Logo Austin Official" width="24" height="24" decoding="async" class="h-6 w-6 rounded-md object-cover" />
-        <span class="text-sm font-semibold tracking-tight text-white">Austin Official</span>
+        <span class="text-sm font-semibold tracking-tight text-white whitespace-nowrap md:hidden lg:inline">Austin Official</span>
       </a>
 
       <ul class="hidden md:flex items-center gap-1" id="desktop-nav">
         <li>
-          <a href="#hero" data-nav="hero" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-white bg-surface-300 transition duration-300 ease-weighted hover:bg-surface-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <a href="#hero" data-nav="hero" class="nav-item whitespace-nowrap rounded-lg px-2 lg:px-3 py-1 text-sm font-semibold text-white bg-surface-300 transition duration-300 ease-weighted hover:bg-surface-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
             Beranda
           </a>
         </li>
         <li>
-          <a href="#biodata" data-nav="biodata" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <a href="#biodata" data-nav="biodata" class="nav-item whitespace-nowrap rounded-lg px-2 lg:px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
             Biodata
           </a>
         </li>
         <li>
-          <a href="#proyek" data-nav="proyek" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <a href="#galeri" data-nav="galeri" class="nav-item whitespace-nowrap rounded-lg px-2 lg:px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            Galeri
+          </a>
+        </li>
+        <li>
+          <a href="#proyek" data-nav="proyek" class="nav-item whitespace-nowrap rounded-lg px-2 lg:px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
             Proyek
           </a>
         </li>
         <li>
-          <a href="#alur" data-nav="alur" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <a href="#alur" data-nav="alur" class="nav-item whitespace-nowrap rounded-lg px-2 lg:px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
             Cara kerja
           </a>
         </li>
         <li>
-          <a href="#faq" data-nav="faq" class="nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <a href="#faq" data-nav="faq" class="nav-item whitespace-nowrap rounded-lg px-2 lg:px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500">
             FAQ
           </a>
         </li>
@@ -401,16 +447,19 @@
       <li class="mobile-nav-link" style="transition-delay: 120ms;">
         <a href="#biodata" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Biodata</a>
       </li>
-      <li class="mobile-nav-link" style="transition-delay: 180ms;">
+      <li class="mobile-nav-link" style="transition-delay: 150ms;">
+        <a href="#galeri" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Galeri</a>
+      </li>
+      <li class="mobile-nav-link" style="transition-delay: 200ms;">
         <a href="#proyek" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Proyek</a>
       </li>
-      <li class="mobile-nav-link" style="transition-delay: 240ms;">
+      <li class="mobile-nav-link" style="transition-delay: 250ms;">
         <a href="#alur" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Cara kerja</a>
       </li>
       <li class="mobile-nav-link" style="transition-delay: 300ms;">
         <a href="#faq" class="mobile-link block rounded-xl bg-surface-100 border border-surface-300 px-4 py-3 text-2xl font-semibold text-white">Tanya-tanya</a>
       </li>
-      <li class="mobile-nav-link" style="transition-delay: 360ms;">
+      <li class="mobile-nav-link" style="transition-delay: 350ms;">
         <a href="#kontak" class="mobile-link block rounded-xl bg-blue-600 px-4 py-3 text-2xl font-semibold text-white">Ngobrol yuk</a>
       </li>
     </ul>
@@ -419,6 +468,10 @@
       <p class="text-xs font-mono text-neutral-400">Basecamp</p>
       <p class="text-sm font-mono text-blue-400 mt-1">Ujung timur Madura</p>
       <p class="text-xs text-neutral-400 mt-1">Lombang, Sumenep, Jawa Timur</p>
+      <a href="mailto:austinstoreofficial@gmail.com" class="mobile-link mt-3 inline-flex items-center gap-2 text-xs font-mono text-neutral-300 hover:text-white break-all">
+        <i class="ph ph-envelope-simple text-base text-blue-400" aria-hidden="true"></i>
+        austinstoreofficial@gmail.com
+      </a>
     </div>
   </div>
 
@@ -483,24 +536,39 @@
                 <span class="text-xs font-mono text-blue-400 bg-surface-0 px-2 py-0.5 rounded">online</span>
               </div>
 
-              <div class="rounded-lg bg-surface-200 border border-surface-400 p-4 flex items-center gap-4 mb-4">
-                <div class="relative h-16 w-16 shrink-0 rounded-lg bg-surface-300 border border-blue-500 overflow-hidden flex items-center justify-center">
-                  <img
-                    src="assets/avatar.webp?v=2"
-                    alt="Foto profil Ach Muhlis Austin Official"
-                    class="h-full w-full object-cover"
-                    onerror="this.style.display='none'; document.getElementById('avatar-fallback').style.display='flex';"
-                  />
-                  <div id="avatar-fallback" class="hidden h-full w-full items-center justify-center bg-surface-0 text-blue-400 font-bold text-xl font-mono">
-                    AM
+              <figure class="frame frame--clean group relative mb-4 overflow-hidden rounded-2xl border border-surface-400 bg-surface-0 aspect-[4/3] lg:aspect-square">
+                <img
+                  src="assets/foto-1.webp?v=1"
+                  alt="Foto Ach Muhlis (Austin Official) duduk santai di kursi kulit, berjas hitam dan kemeja putih"
+                  width="900" height="1200"
+                  fetchpriority="high"
+                  decoding="async"
+                  class="absolute inset-0 h-full w-full object-cover object-[50%_26%]"
+                  onerror="this.style.display='none'; document.getElementById('avatar-fallback').style.display='flex';"
+                />
+                <div id="avatar-fallback" class="hidden absolute inset-0 items-center justify-center bg-surface-0 text-blue-400 font-bold text-5xl font-mono">AM</div>
+                <span class="tint" aria-hidden="true"></span>
+                <div class="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-2/5 bg-gradient-to-t from-black/90 via-black/40 to-transparent" aria-hidden="true"></div>
+
+                <span class="glass-chip absolute left-4 top-4 z-[4] inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-mono text-neutral-200">
+                  <span class="relative flex h-2 w-2">
+                    <span class="radar-pulse absolute inline-flex h-full w-full rounded-full bg-blue-500"></span>
+                    <span class="relative inline-flex h-2 w-2 rounded-full bg-blue-500"></span>
+                  </span>
+                  Online
+                </span>
+                <span class="glass-chip absolute right-4 top-4 z-[4] inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-mono text-neutral-200">
+                  <i class="ph ph-map-pin text-blue-400" aria-hidden="true"></i> Madura
+                </span>
+
+                <figcaption class="absolute inset-x-4 bottom-4 z-[4] flex items-end justify-between gap-3">
+                  <div>
+                    <h2 class="text-2xl font-bold leading-tight text-white">Ach Muhlis</h2>
+                    <p class="text-sm font-semibold text-blue-400">Austin Official</p>
                   </div>
-                </div>
-                <div>
-                  <h2 class="text-lg font-bold text-white">Ach Muhlis</h2>
-                  <p class="text-sm text-blue-400 font-semibold">Austin Official</p>
-                  <p class="text-xs text-neutral-400 mt-0.5">Developer dibantu AI, 23 tahun, Madura</p>
-                </div>
-              </div>
+                  <span class="glass-chip shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-mono text-neutral-200">Dev + AI</span>
+                </figcaption>
+              </figure>
 
               <div class="flex flex-col gap-2">
                 <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between">
@@ -508,7 +576,7 @@
                     <i class="ph ph-calendar-blank text-blue-400 text-base" aria-hidden="true"></i>
                     Tanggal Lahir
                   </span>
-                  <span class="text-xs font-mono text-white">April 2003</span>
+                  <span class="text-xs font-mono text-white">6 April 2003</span>
                 </div>
 
                 <div class="rounded-lg bg-surface-0 border border-surface-300 p-3 flex items-center justify-between">
@@ -586,12 +654,12 @@
                 <p class="text-lg font-bold text-white mt-1">Ach Muhlis</p>
               </div>
               <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
-                <p class="text-xs font-mono text-neutral-400">Nama toko online</p>
+                <p class="text-xs font-mono text-neutral-400">Nama online</p>
                 <p class="text-lg font-bold text-blue-400 mt-1">Austin Official</p>
               </div>
               <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
                 <p class="text-xs font-mono text-neutral-400">Lahir</p>
-                <p class="text-lg font-bold text-white mt-1">April 2003</p>
+                <p class="text-lg font-bold text-white mt-1">6 April 2003</p>
               </div>
               <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
                 <p class="text-xs font-mono text-neutral-400">Kerjaan</p>
@@ -749,7 +817,97 @@
             </blockquote>
           </article>
 
+          <article id="ultah" class="md:col-span-12 rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col gap-6">
+            <div class="flex items-start justify-between gap-4">
+              <div>
+                <p class="text-xs font-mono text-blue-400 flex items-center gap-2">
+                  <i class="ph ph-cake text-base" aria-hidden="true"></i>
+                  Hitung mundur ulang tahun
+                </p>
+                <h3 id="bd-title" class="text-2xl sm:text-3xl font-bold text-white mt-2">Menuju ulang tahun ke-24</h3>
+                <p id="bd-date" class="text-sm text-neutral-400 mt-1">6 April 2027</p>
+              </div>
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-200 border border-surface-400 text-blue-400">
+                <i class="ph ph-hourglass-medium text-xl" aria-hidden="true"></i>
+              </span>
+            </div>
+
+            <div id="bd-grid" role="timer" aria-label="Hitung mundur menuju ulang tahun Muhlis" class="grid grid-cols-4 gap-2 sm:gap-4">
+              <div class="cd-cell rounded-xl bg-surface-0 border border-surface-300 px-2 py-4 sm:p-6 text-center transition duration-300 ease-weighted">
+                <span class="cd-num font-mono font-bold text-3xl sm:text-5xl lg:text-6xl text-white" data-cd="d">000</span>
+                <p class="text-[11px] sm:text-xs font-mono text-neutral-400 mt-2">Hari</p>
+              </div>
+              <div class="cd-cell rounded-xl bg-surface-0 border border-surface-300 px-2 py-4 sm:p-6 text-center transition duration-300 ease-weighted">
+                <span class="cd-num font-mono font-bold text-3xl sm:text-5xl lg:text-6xl text-white" data-cd="h">00</span>
+                <p class="text-[11px] sm:text-xs font-mono text-neutral-400 mt-2">Jam</p>
+              </div>
+              <div class="cd-cell rounded-xl bg-surface-0 border border-surface-300 px-2 py-4 sm:p-6 text-center transition duration-300 ease-weighted">
+                <span class="cd-num font-mono font-bold text-3xl sm:text-5xl lg:text-6xl text-white" data-cd="m">00</span>
+                <p class="text-[11px] sm:text-xs font-mono text-neutral-400 mt-2">Menit</p>
+              </div>
+              <div class="cd-cell rounded-xl bg-surface-0 border border-blue-500/60 px-2 py-4 sm:p-6 text-center transition duration-300 ease-weighted">
+                <span class="cd-num font-mono font-bold text-3xl sm:text-5xl lg:text-6xl text-blue-400" data-cd="s">00</span>
+                <p class="text-[11px] sm:text-xs font-mono text-neutral-400 mt-2">Detik</p>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between text-xs font-mono text-neutral-400 mb-2">
+                <span id="bd-prev">6 Apr 2026</span>
+                <span id="bd-pct" class="text-blue-400">0%</span>
+                <span id="bd-next">6 Apr 2027</span>
+              </div>
+              <div class="h-2 overflow-hidden rounded-full bg-surface-0 border border-surface-300">
+                <div id="bd-bar" class="cd-bar h-full w-full rounded-full bg-gradient-to-r from-blue-600 to-blue-400"></div>
+              </div>
+            </div>
+          </article>
+
         </div>
+      </div>
+    </section>
+
+    <section id="galeri" aria-label="Galeri foto" class="relative overflow-hidden py-20 md:py-24 px-4 sm:px-6 border-y border-surface-300">
+      <div class="gallery-glow -top-24 -right-32 h-[460px] w-[460px]" aria-hidden="true"></div>
+      <div class="gallery-glow -bottom-32 -left-40 h-[420px] w-[420px]" aria-hidden="true"></div>
+      <div class="relative max-w-6xl mx-auto">
+
+        <div class="mb-12">
+          <h2 class="text-3xl sm:text-4xl font-bold text-white max-w-[680px]">
+            Galeri
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10 items-start max-w-xl mx-auto">
+          <figure data-gal-item>
+            <button type="button" data-gal="0" aria-label="Perbesar foto 1: potret duduk di kursi kulit" class="frame group block w-full cursor-zoom-in overflow-hidden rounded-3xl border border-surface-400 bg-surface-0 aspect-[4/5] text-left focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-500 ease-weighted hover:border-blue-600">
+              <img src="assets/foto-1.webp?v=1" alt="Potret Ach Muhlis duduk di kursi kulit, tangan menopang dagu, menatap kamera" width="900" height="1200" loading="lazy" decoding="async" data-par class="photo-par absolute inset-0 h-full w-full object-cover" />
+              <span class="tint" aria-hidden="true"></span>
+              <span class="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-1/3 bg-gradient-to-t from-black/80 to-transparent" aria-hidden="true"></span>
+              <span class="glass-chip absolute bottom-4 left-4 z-[4] inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-mono text-neutral-200">
+                <span class="text-blue-400">01</span>
+              </span>
+              <span class="glass-chip absolute bottom-4 right-4 z-[4] flex h-8 w-8 items-center justify-center rounded-full text-neutral-200 transition duration-300 ease-weighted group-hover:bg-blue-600 group-hover:text-white">
+                <i class="ph ph-arrows-out-simple" aria-hidden="true"></i>
+              </span>
+            </button>
+          </figure>
+
+          <figure data-gal-item class="sm:mt-14">
+            <button type="button" data-gal="1" aria-label="Perbesar foto 2: potret berdiri bersandar di dinding" class="frame group block w-full cursor-zoom-in overflow-hidden rounded-3xl border border-surface-400 bg-surface-0 aspect-[4/5] text-left focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-500 ease-weighted hover:border-blue-600">
+              <img src="assets/foto-2.webp?v=1" alt="Potret Ach Muhlis bersandar di dinding beton, menunduk, tangan memegang kerah jas" width="900" height="1200" loading="lazy" decoding="async" data-par class="photo-par absolute inset-0 h-full w-full object-cover" />
+              <span class="tint" aria-hidden="true"></span>
+              <span class="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-1/3 bg-gradient-to-t from-black/80 to-transparent" aria-hidden="true"></span>
+              <span class="glass-chip absolute bottom-4 left-4 z-[4] inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-mono text-neutral-200">
+                <span class="text-blue-400">02</span>
+              </span>
+              <span class="glass-chip absolute bottom-4 right-4 z-[4] flex h-8 w-8 items-center justify-center rounded-full text-neutral-200 transition duration-300 ease-weighted group-hover:bg-blue-600 group-hover:text-white">
+                <i class="ph ph-arrows-out-simple" aria-hidden="true"></i>
+              </span>
+            </button>
+          </figure>
+        </div>
+
       </div>
     </section>
 
@@ -889,7 +1047,7 @@
           </p>
         </div>
 
-        <div id="socials-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div id="socials-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           </div>
 
       </div>
@@ -961,7 +1119,17 @@
               <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted" aria-hidden="true"></i>
             </button>
             <div class="faq-content hidden px-2 pt-2 pb-1 text-sm text-neutral-300">
-              Ikut Channel atau Group WhatsApp Austin Official, atau chat langsung ke WhatsApp +62 851 1362 8383 atau Telegram @austinoffc1.
+              Ikut Channel atau Group WhatsApp Austin Official, atau chat langsung ke WhatsApp +62 851 1362 8383, Telegram @austinoffc1, atau kirim email ke <a href="mailto:austinstoreofficial@gmail.com" class="text-blue-400 underline hover:text-blue-300">austinstoreofficial@gmail.com</a>.
+            </div>
+          </div>
+
+          <div class="rounded-2xl bg-surface-100 border border-surface-400 p-4">
+            <button type="button" class="faq-trigger w-full flex items-center justify-between text-left gap-4 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500" aria-expanded="false">
+              <span class="text-lg font-semibold text-white">Kapan ulang tahunnya?</span>
+              <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted" aria-hidden="true"></i>
+            </button>
+            <div class="faq-content hidden px-2 pt-2 pb-1 text-sm text-neutral-300">
+              Tanggal 6 April. Hitung mundurnya ada di bagian Biodata.
             </div>
           </div>
         </div>
@@ -978,7 +1146,7 @@
               Punya ide atau mau tanya-tanya? Chat aja.
             </h2>
             <p class="text-base text-neutral-400 max-w-[680px]">
-              Tanya-tanya ide awal gratis, tanpa ikatan. Isi form di samping, nanti WhatsApp-ku kebuka. Atau lihat-lihat proyek dulu.
+              Tanya-tanya ide awal gratis, tanpa ikatan. Isi form di samping, nanti WhatsApp atau emailmu kebuka. Atau lihat-lihat proyek dulu.
             </p>
             <div class="pt-2 flex flex-wrap items-center gap-3">
               <a
@@ -989,6 +1157,18 @@
                 <i class="ph ph-arrow-up-right text-lg" aria-hidden="true"></i>
               </a>
             </div>
+            <a
+              href="mailto:austinstoreofficial@gmail.com"
+              class="group mt-2 inline-flex max-w-full items-center gap-3 rounded-xl bg-surface-100 border border-surface-400 px-4 py-3 transition duration-300 ease-weighted hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-surface-200 border border-surface-400 text-blue-400">
+                <i class="ph ph-envelope-simple text-xl" aria-hidden="true"></i>
+              </span>
+              <span class="min-w-0">
+                <span class="block text-xs font-mono text-neutral-400">Email</span>
+                <span class="block text-sm font-semibold text-white break-all group-hover:text-blue-400 transition-colors duration-300">austinstoreofficial@gmail.com</span>
+              </span>
+            </a>
           </div>
 
           <div class="lg:col-span-6">
@@ -1034,13 +1214,23 @@
                 <p id="error-message" class="hidden text-xs text-red-400 mt-1">Pesannya masih kosong, satu kalimat aja cukup.</p>
               </div>
 
-              <button
-                type="submit"
-                class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-base font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                <i class="ph ph-whatsapp-logo text-lg" aria-hidden="true"></i>
-                <span>Kirim lewat WhatsApp</span>
-              </button>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  type="submit"
+                  class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-base font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+                  <i class="ph ph-whatsapp-logo text-lg" aria-hidden="true"></i>
+                  <span>Lewat WhatsApp</span>
+                </button>
+                <button
+                  type="button"
+                  id="send-email-btn"
+                  class="w-full inline-flex items-center justify-center gap-2 rounded-lg bg-surface-200 border border-surface-400 px-3 py-2 text-base font-semibold text-white transition duration-300 ease-weighted hover:bg-surface-300 hover:border-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <i class="ph ph-envelope-simple text-lg text-blue-400" aria-hidden="true"></i>
+                  <span>Lewat Email</span>
+                </button>
+              </div>
 
               <p id="form-success" class="hidden text-xs text-blue-400 font-mono">
                 Oke, membuka WhatsApp...
@@ -1064,6 +1254,10 @@
         <p class="text-xs text-neutral-400 mt-1">
           Lombang, Sumenep, Jawa Timur
         </p>
+        <a href="mailto:austinstoreofficial@gmail.com" class="mt-2 inline-flex items-center gap-1.5 text-xs font-mono text-neutral-300 hover:text-white break-all focus:outline-none focus:ring-2 focus:ring-blue-500 rounded">
+          <i class="ph ph-envelope-simple text-blue-400 text-sm" aria-hidden="true"></i>
+          austinstoreofficial@gmail.com
+        </a>
       </div>
 
       <div class="flex flex-wrap items-center gap-4 text-xs text-neutral-400">
@@ -1093,6 +1287,22 @@
     </div>
   </div>
 
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Pratinjau foto" aria-hidden="true" class="fixed inset-0 z-[70] flex items-center justify-center bg-black/90 p-4 opacity-0 pointer-events-none backdrop-blur-md">
+    <button type="button" id="lb-close" aria-label="Tutup pratinjau" class="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-surface-200 border border-surface-400 text-white hover:bg-surface-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <i class="ph ph-x text-lg" aria-hidden="true"></i>
+    </button>
+    <button type="button" id="lb-prev" aria-label="Foto sebelumnya" class="absolute left-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-surface-200 border border-surface-400 text-white hover:bg-surface-300 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:left-6">
+      <i class="ph ph-caret-left text-lg" aria-hidden="true"></i>
+    </button>
+    <button type="button" id="lb-next" aria-label="Foto berikutnya" class="absolute right-3 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full bg-surface-200 border border-surface-400 text-white hover:bg-surface-300 focus:outline-none focus:ring-2 focus:ring-blue-500 sm:right-6">
+      <i class="ph ph-caret-right text-lg" aria-hidden="true"></i>
+    </button>
+    <figure class="flex max-h-full max-w-full flex-col items-center gap-3">
+      <img id="lb-img" src="" alt="" class="max-h-[80vh] w-auto max-w-full rounded-2xl border border-surface-400 object-contain" />
+      <figcaption id="lb-cap" class="text-xs font-mono text-neutral-400"></figcaption>
+    </figure>
+  </div>
+
   <script>
     const portfolioData = {
       name: "Austin Official",
@@ -1100,7 +1310,7 @@
       birthDate: "2003-04-06",
       info: "AI-assisted developer, 23 tahun, Madura",
       tagline: "Beberapa project saya: payment gateway, marketplace, catatan, dan musik.",
-      avatar: "assets/avatar.webp?v=2",
+      avatar: "assets/avatar.webp?v=3",
       music: "assets/music.mp3?v=1793213920550",
       links: [
         {
@@ -1186,9 +1396,16 @@
           handle: "@austinoffc1",
           phIcon: "ph-telegram-logo",
           url: "https://t.me/austinoffc1"
+        },
+        {
+          label: "Email",
+          handle: "austinstoreofficial@gmail.com",
+          phIcon: "ph-envelope-simple",
+          url: "mailto:austinstoreofficial@gmail.com"
         }
       ]
     };
+    const CONTACT_EMAIL = "austinstoreofficial@gmail.com";
 
     let toastTimer = null;
     function showSystemToast(message) {
@@ -1285,8 +1502,7 @@
     socialsGrid.innerHTML = portfolioData.socials.map(soc => `
       <a
         href="${soc.url}"
-        target="_blank"
-        rel="noopener noreferrer"
+        ${soc.url.startsWith('mailto:') ? '' : 'target="_blank" rel="noopener noreferrer"'}
         class="rounded-2xl bg-surface-0 border border-surface-400 p-4 flex flex-col justify-between gap-4 transition duration-300 ease-weighted hover:border-blue-500 hover:-translate-y-1 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-500"
       >
         <div class="flex items-center justify-between">
@@ -1297,7 +1513,7 @@
         </div>
         <div>
           <p class="text-base font-bold text-white">${soc.label}</p>
-          <p class="text-xs font-mono text-neutral-400 mt-0.5">${soc.handle}</p>
+          <p class="text-xs font-mono text-neutral-400 mt-0.5 break-all">${soc.handle}</p>
         </div>
       </a>
     `).join('');
@@ -1357,9 +1573,9 @@
           const id = entry.target.getAttribute('id');
           navLinks.forEach(link => {
             if (link.getAttribute('data-nav') === id) {
-              link.className = 'nav-item rounded-lg px-3 py-1 text-sm font-semibold text-white bg-surface-300 transition duration-300 ease-weighted focus:outline-none focus:ring-2 focus:ring-blue-500';
+              link.className = 'nav-item whitespace-nowrap rounded-lg px-2 lg:px-3 py-1 text-sm font-semibold text-white bg-surface-300 transition duration-300 ease-weighted focus:outline-none focus:ring-2 focus:ring-blue-500';
             } else if (link.getAttribute('data-nav')) {
-              link.className = 'nav-item rounded-lg px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500';
+              link.className = 'nav-item whitespace-nowrap rounded-lg px-2 lg:px-3 py-1 text-sm font-semibold text-neutral-400 transition duration-300 ease-weighted hover:text-white hover:bg-surface-200 focus:outline-none focus:ring-2 focus:ring-blue-500';
             }
           });
         }
@@ -1509,8 +1725,10 @@
     });
 
     const contactForm = document.getElementById('contact-form');
-    contactForm.addEventListener('submit', (e) => {
-      e.preventDefault();
+    const successMsg = document.getElementById('form-success');
+
+    // Validasi form; return true kalau semua isian benar
+    function validateContactForm() {
       const nameInput = document.getElementById('sender-name');
       const emailInput = document.getElementById('sender-email');
       const msgInput = document.getElementById('sender-message');
@@ -1518,7 +1736,6 @@
       const errName = document.getElementById('error-name');
       const errEmail = document.getElementById('error-email');
       const errMsg = document.getElementById('error-message');
-      const successMsg = document.getElementById('form-success');
 
       let valid = true;
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -1544,12 +1761,40 @@
         errMsg.classList.add('hidden');
       }
 
-      if (!valid) return;
+      return valid;
+    }
 
+    function readContactForm() {
+      return {
+        name: document.getElementById('sender-name').value.trim(),
+        email: document.getElementById('sender-email').value.trim(),
+        message: document.getElementById('sender-message').value.trim()
+      };
+    }
+
+    // Kirim lewat WhatsApp
+    contactForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!validateContactForm()) return;
+
+      const f = readContactForm();
+      successMsg.textContent = 'Oke, membuka WhatsApp...';
       successMsg.classList.remove('hidden');
-      const text = `Halo Muhlis, aku ${nameInput.value.trim()} (${emailInput.value.trim()}). ${msgInput.value.trim()}`;
+      const text = `Halo Muhlis, aku ${f.name} (${f.email}). ${f.message}`;
       const waUrl = `https://wa.me/6285113628383?text=${encodeURIComponent(text)}`;
       window.open(waUrl, '_blank', 'noopener,noreferrer');
+    });
+
+    // Kirim lewat Email (membuka aplikasi email dengan isian terisi)
+    document.getElementById('send-email-btn').addEventListener('click', () => {
+      if (!validateContactForm()) return;
+
+      const f = readContactForm();
+      successMsg.textContent = 'Oke, membuka aplikasi email...';
+      successMsg.classList.remove('hidden');
+      const subject = `Pesan dari ${f.name} (lewat portofolio)`;
+      const body = `Halo Muhlis,\n\n${f.message}\n\nSalam,\n${f.name}\n${f.email}`;
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     });
 
     const modal = document.getElementById('info-modal');
@@ -1559,7 +1804,7 @@
 
     document.getElementById('open-privacy').addEventListener('click', () => {
       modalTitle.textContent = 'Soal privasi';
-      modalBody.textContent = 'Halaman ini nggak nyimpen data kamu. Form cuma ngecek isian di browser lalu langsung membuka WhatsApp.';
+      modalBody.textContent = 'Halaman ini nggak nyimpen data kamu. Form cuma ngecek isian di browser lalu langsung membuka WhatsApp atau aplikasi emailmu.';
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     });
@@ -1575,28 +1820,183 @@
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     });
+
+    /* ===== Hitung mundur ulang tahun =====
+       Tanggal lahir diambil dari portfolioData.birthDate. Dihitung pakai zona waktu WIB (UTC+7)
+       supaya angkanya sama untuk semua pengunjung, di mana pun mereka berada. */
+    (function () {
+      const WIB = 7 * 3600e3;
+      const DAY = 86400e3;
+      const [bY, bM, bD] = portfolioData.birthDate.split('-').map(Number);
+      const grid = document.getElementById('bd-grid');
+      if (!grid) return;
+
+      const cells = {
+        d: grid.querySelector('[data-cd="d"]'),
+        h: grid.querySelector('[data-cd="h"]'),
+        m: grid.querySelector('[data-cd="m"]'),
+        s: grid.querySelector('[data-cd="s"]')
+      };
+      const elTitle = document.getElementById('bd-title');
+      const elDate = document.getElementById('bd-date');
+      const elPrev = document.getElementById('bd-prev');
+      const elNext = document.getElementById('bd-next');
+      const elPct = document.getElementById('bd-pct');
+      const elBar = document.getElementById('bd-bar');
+      const card = document.getElementById('ultah');
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Awal hari ulang tahun (00:00 WIB) di tahun y, dalam ms UTC
+      const bdayStart = (y) => Date.UTC(y, bM - 1, bD) - WIB;
+      const fmt = (ts, opt) => new Intl.DateTimeFormat('id-ID', Object.assign({ timeZone: 'Asia/Jakarta' }, opt)).format(ts);
+      const pad = (n, len) => String(n).padStart(len, '0');
+
+      const last = {};
+      function setNum(key, text) {
+        const node = cells[key];
+        if (last[key] === text) return;
+        last[key] = text;
+        node.textContent = text;
+        if (!reduce) {
+          node.classList.remove('tick');
+          void node.offsetWidth; // restart animasi
+          node.classList.add('tick');
+        }
+      }
+
+      let lastLabelYear = null;
+      function render() {
+        const now = Date.now();
+        let year = new Date(now + WIB).getUTCFullYear();
+        let start = bdayStart(year);
+        const isToday = now >= start && now < start + DAY;
+
+        // Sudah lewat hari-H tahun ini → target tahun depan
+        if (now >= start + DAY) { year += 1; start = bdayStart(year); }
+
+        const age = year - bY;
+        const diff = isToday ? 0 : Math.max(start - now, 0);
+        const sec = Math.floor(diff / 1000);
+
+        setNum('d', pad(Math.floor(sec / 86400), 2));
+        setNum('h', pad(Math.floor(sec % 86400 / 3600), 2));
+        setNum('m', pad(Math.floor(sec % 3600 / 60), 2));
+        setNum('s', pad(sec % 60, 2));
+
+        card.classList.toggle('cd-party', isToday);
+
+        if (isToday) {
+          elTitle.textContent = `Selamat ulang tahun ke-${age}, Muhlis!`;
+          elDate.textContent = 'Hari ini hari spesialnya. Doakan yang baik-baik ya.';
+        } else {
+          elTitle.textContent = `Menuju ulang tahun ke-${age}`;
+        }
+
+        // Label tanggal & progress bar (diperbarui saat tahun target berganti, persen tiap detik)
+        const prevStart = bdayStart(year - 1);
+        if (lastLabelYear !== year) {
+          lastLabelYear = year;
+          if (!isToday) elDate.textContent = `${fmt(start, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}, pukul 00.00 WIB`;
+          elPrev.textContent = fmt(prevStart, { day: 'numeric', month: 'short', year: 'numeric' });
+          elNext.textContent = fmt(start, { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+        const p = isToday ? 1 : Math.min(Math.max((now - prevStart) / (start - prevStart), 0), 1);
+        elBar.style.setProperty('--cd', p.toFixed(4));
+        elPct.textContent = `${(Math.floor(p * 1000) / 10).toFixed(1)}%`;
+      }
+
+      render();
+      setInterval(render, 1000);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) render(); });
+    })();
+
+    /* ===== Galeri + lightbox ===== */
+    (function () {
+      const items = [
+        { src: 'assets/foto-1.webp?v=1', alt: 'Potret Ach Muhlis duduk di kursi kulit, tangan menopang dagu, menatap kamera', cap: '01 / 02' },
+        { src: 'assets/foto-2.webp?v=1', alt: 'Potret Ach Muhlis bersandar di dinding beton, menunduk, tangan memegang kerah jas', cap: '02 / 02' }
+      ];
+      const lb = document.getElementById('lightbox');
+      const img = document.getElementById('lb-img');
+      const cap = document.getElementById('lb-cap');
+      const btnClose = document.getElementById('lb-close');
+      const btnPrev = document.getElementById('lb-prev');
+      const btnNext = document.getElementById('lb-next');
+      let idx = 0, opener = null;
+
+      function show(i) {
+        idx = (i + items.length) % items.length;
+        img.style.opacity = '0';
+        setTimeout(() => {
+          img.src = items[idx].src;
+          img.alt = items[idx].alt;
+          cap.textContent = items[idx].cap;
+          img.style.opacity = '1';
+        }, 120);
+      }
+      function open(i, trigger) {
+        opener = trigger || null;
+        img.src = items[i].src; img.alt = items[i].alt; cap.textContent = items[i].cap;
+        idx = i;
+        lb.classList.add('is-open');
+        lb.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
+        btnClose.focus();
+      }
+      function close() {
+        lb.classList.remove('is-open');
+        lb.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (opener) opener.focus();
+      }
+
+      document.querySelectorAll('[data-gal]').forEach(btn => {
+        btn.addEventListener('click', () => open(Number(btn.dataset.gal), btn));
+      });
+      btnClose.addEventListener('click', close);
+      btnPrev.addEventListener('click', () => show(idx - 1));
+      btnNext.addEventListener('click', () => show(idx + 1));
+      lb.addEventListener('click', (e) => { if (e.target === lb) close(); });
+      document.addEventListener('keydown', (e) => {
+        if (!lb.classList.contains('is-open')) return;
+        if (e.key === 'Escape') close();
+        else if (e.key === 'ArrowLeft') show(idx - 1);
+        else if (e.key === 'ArrowRight') show(idx + 1);
+      });
+    })();
   </script>
 
   <script>
     /* ===== Efek scroll & visual =====
+       Animasi masuk berlaku DUA ARAH dan berulang: tiap elemen muncul (fade + geser + blur) setiap kali
+       masuk layar, baik saat scroll ke bawah maupun ke atas, lalu di-reset (hilang) begitu keluar layar,
+       jadi efeknya muncul lagi terus-menerus. Saat scroll ke atas, elemen meluncur turun dari atas.
        Kalau ada error di sini, class "js" dicopot supaya semua konten tetap terlihat. */
     (function () {
       try {
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var STEP = 90;   // jeda antar elemen yang muncul bersamaan (ms)
         var MAX_STEPS = 7;
-        var io = null;
+        var dir = 'down';                       // arah scroll terakhir: 'down' | 'up'
+        var lastY = window.pageYOffset || 0;
+        var ioShow = null, ioHide = null;
 
         function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+        function sign() { return dir === 'up' ? -1 : 1; }
 
+        // Hitung naik; tiap panggilan baru membatalkan hitungan lama (token _cu)
         function countUp(node, delay) {
           var to = parseFloat(node.getAttribute('data-count'));
           var from = parseFloat(node.getAttribute('data-from') || '0');
+          node._cu = (node._cu || 0) + 1;
+          var id = node._cu;
           if (isNaN(to) || reduce) return;
           node.textContent = from;
           setTimeout(function () {
+            if (node._cu !== id) return;
             var t0 = null, dur = 1400;
             function tick(t) {
+              if (node._cu !== id) return;
               if (t0 === null) t0 = t;
               var p = Math.min((t - t0) / dur, 1);
               var e = 1 - Math.pow(1 - p, 4);
@@ -1607,21 +2007,35 @@
           }, delay + 200);
         }
 
-        function show(el, delay, instant) {
+        function show(el, delay) {
           if (el.classList.contains('rv-in')) return;
-          var d = instant ? 0 : delay;
-          if (instant) el.setAttribute('data-rv-instant', '');
-          el.style.setProperty('--rv-delay', d + 'ms');
+          var s = sign();
+          el.style.setProperty('--rv-delay', delay + 'ms');
+          el.style.setProperty('--rv-s', s);
           el.classList.add('rv-in');
 
           if (el.hasAttribute('data-rv-kids')) {
-            Array.prototype.forEach.call(el.children, function (kid, i) {
-              if (instant) kid.setAttribute('data-rv-instant', '');
-              kid.style.setProperty('--rv-delay', (d + 160 + i * 110) + 'ms');
+            var kids = Array.prototype.slice.call(el.children);
+            kids.forEach(function (kid, i) {
+              var order = s === -1 ? kids.length - 1 - i : i;   // scroll ke atas: anak paling bawah muncul duluan
+              kid.style.setProperty('--rv-delay', (delay + 160 + order * 110) + 'ms');
+              kid.style.setProperty('--rv-s', s);
               kid.classList.add('rv-in');
             });
           }
-          $all('[data-count]', el).forEach(function (n) { countUp(n, d); });
+          $all('[data-count]', el).forEach(function (n) { countUp(n, delay); });
+        }
+
+        function hide(el) {
+          if (!el.classList.contains('rv-in')) return;
+          el.classList.remove('rv-in');
+          if (el.hasAttribute('data-rv-kids')) {
+            Array.prototype.forEach.call(el.children, function (kid) { kid.classList.remove('rv-in'); });
+          }
+          $all('[data-count]', el).forEach(function (n) {
+            n._cu = (n._cu || 0) + 1;
+            n.textContent = n.getAttribute('data-from') || '0';
+          });
         }
 
         function tag(el, variant, kids) {
@@ -1641,15 +2055,21 @@
           });
         }
 
-        function observe(el) { if (io && !el.classList.contains('rv-in') && el.getAttribute('data-rv') !== 'kid') io.observe(el); }
+        function observe(el) {
+          if (!ioShow || el.getAttribute('data-rv') === 'kid') return;
+          ioShow.observe(el);
+          ioHide.observe(el);
+        }
 
         function domOrder(a, b) { return a.compareDocumentPosition(b) & 4 ? -1 : 1; }
 
         // Tandai elemen mana saja yang mau dianimasikan
+        tagAll('#ultah', 'up', true, true);
         tagAll('main section:not(#hero) h2', 'blur');
         tagAll('main section:not(#hero) .mb-12 p', 'up');
         tagAll('#proyek [role="tablist"]', 'right');
         tagAll('#biodata article', function (i) { return i % 2 === 0 ? 'left' : 'right'; }, true, true);
+        tagAll('#galeri [data-gal-item]', function (i) { return i % 2 === 0 ? 'left' : 'right'; });
         tagAll('#proyek .mb-8 > div', 'up', false, true);
         tagAll('#alur .grid > div', 'up', true, true);
         tagAll('#socials-grid > a', 'zoom', false, true);
@@ -1659,24 +2079,27 @@
         tagAll('#kontak form', 'right', true);
         tagAll('footer > div', 'up');
 
-        if (!('IntersectionObserver' in window)) {
-          $all('[data-rv]').forEach(function (el) { show(el, 0, true); });
+        if (reduce) {
+          // Pengguna minta "kurangi animasi": tampilkan semua tanpa animasi
+          $all('[data-rv]').forEach(function (el) { el.classList.add('rv-in'); });
+        } else if (!('IntersectionObserver' in window)) {
+          $all('[data-rv]').forEach(function (el) { show(el, 0); });
         } else {
-          io = new IntersectionObserver(function (entries) {
-            var visible = entries.filter(function (e) { return e.isIntersecting; })
-              .map(function (e) { return e.target; }).sort(domOrder);
-            visible.forEach(function (el, i) {
-              show(el, Math.min(i, MAX_STEPS) * STEP, false);
-              io.unobserve(el);
-            });
-            // Elemen yang sudah terlewat (misal halaman dibuka di tengah / lompat lewat menu): tampilkan langsung
-            entries.forEach(function (e) {
-              if (!e.isIntersecting && e.boundingClientRect.top < 0) {
-                show(e.target, 0, true);
-                io.unobserve(e.target);
-              }
-            });
-          }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+          // Observer 1: muncul saat >= 12% elemen masuk layar (arah mana pun)
+          ioShow = new IntersectionObserver(function (entries) {
+            var visible = entries
+              .filter(function (e) { return e.isIntersecting && e.intersectionRatio >= 0.11; })
+              .map(function (e) { return e.target; })
+              .sort(domOrder);
+            if (dir === 'up') visible.reverse();   // scroll ke atas: yang paling dekat tepi atas (paling bawah di DOM) duluan
+            visible.forEach(function (el, i) { show(el, Math.min(i, MAX_STEPS) * STEP); });
+          }, { threshold: [0.12], rootMargin: '0px 0px -6% 0px' });
+
+          // Observer 2: reset (sembunyikan) hanya setelah elemen benar-benar keluar layar,
+          // supaya tidak ada elemen yang tiba-tiba hilang selagi masih kelihatan.
+          ioHide = new IntersectionObserver(function (entries) {
+            entries.forEach(function (e) { if (!e.isIntersecting) hide(e.target); });
+          }, { threshold: [0], rootMargin: '0px' });
 
           $all('[data-rv]').forEach(observe);
 
@@ -1697,10 +2120,11 @@
           }
         }
 
-        // Scroll: progress bar, parallax glow hero, bayangan navbar
+        // Scroll: arah, progress bar, parallax glow hero, parallax foto, bayangan navbar
         var bar = document.getElementById('scroll-progress');
         var header = document.querySelector('header');
         var root = document.documentElement;
+        var pars = $all('[data-par]');
         var ticking = false;
 
         function onScroll() {
@@ -1709,9 +2133,24 @@
           if (bar) bar.style.setProperty('--p', Math.min(y / max, 1).toFixed(4));
           if (!reduce && y < 1400) root.style.setProperty('--sy', Math.round(y));
           if (header) header.classList.toggle('is-scrolled', y > 12);
+
+          // Parallax foto galeri: bergerak pelan, searah/berlawanan mengikuti scroll (dua arah)
+          if (!reduce) {
+            var vh = window.innerHeight;
+            pars.forEach(function (img) {
+              var r = img.parentNode.getBoundingClientRect();
+              if (r.bottom < -80 || r.top > vh + 80) return;
+              var off = (r.top + r.height / 2) - vh / 2;
+              img.style.setProperty('--py', Math.max(-26, Math.min(26, -off * 0.06)).toFixed(1));
+            });
+          }
           ticking = false;
         }
+        // Arah scroll dicatat di tiap event (sebelum IntersectionObserver jalan)
         window.addEventListener('scroll', function () {
+          var y = window.pageYOffset || root.scrollTop || 0;
+          if (y > lastY) dir = 'down'; else if (y < lastY) dir = 'up';
+          lastY = y;
           if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
         }, { passive: true });
         window.addEventListener('resize', onScroll);
