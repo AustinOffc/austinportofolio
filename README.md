@@ -9,12 +9,21 @@ index.html        halaman utama
 vercel.json       konfigurasi Vercel (cache aset + header dasar)
 assets/
   avatar.webp       foto profil
+  logo.webp         logo Austin Official (navbar + footer)
+  favicon-32.png    favicon tab browser
+  favicon-48.png    favicon tab browser
+  apple-touch-icon.png  icon saat ditambah ke layar utama
   austinpay.webp    logo AustinPay
   mymarket.webp     logo Austin Store (mymarket)
   lucibook.webp     logo LuciBook
   austinplay.webp   logo AustinPlay (versi kastil)
   music.mp3         musik latar untuk tombol Musik
 ```
+
+## Mode desktop di Android
+
+Skrip kecil di `<head>` `index.html` mengubah viewport jadi lebar 1024 saat terdeteksi Android,
+jadi tampilan desktop otomatis. Ubah `DESKTOP_WIDTH` untuk mengatur lebarnya.
 
 ## Musik latar
 

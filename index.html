@@ -3,6 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>
+    // Android: paksa layout desktop (mirip "Situs desktop" di Chrome).
+    // Lebar 1024 = breakpoint lg Tailwind, jadi tampilan desktop aktif penuh.
+    // Ubah angka DESKTOP_WIDTH kalau mau lebih lebar/sempit.
+    (function () {
+      var DESKTOP_WIDTH = 1024;
+      if (/Android/i.test(navigator.userAgent || '')) {
+        var vp = document.querySelector('meta[name="viewport"]');
+        if (vp) vp.setAttribute('content', 'width=' + DESKTOP_WIDTH);
+      }
+    })();
+  </script>
   <title>Ach Muhlis (Austin Official) | Portofolio & Biodata</title>
   <meta name="description" content="Portofolio Ach Muhlis (Austin Official), anak Lombang, Sumenep yang suka bikin web dibantu AI: AustinPay, Austin Store, LuciBook, dan AustinPlay." />
   <meta name="robots" content="index, follow" />
@@ -12,7 +24,9 @@
   <meta property="og:description" content="Web iseng yang akhirnya kepakai: AustinPay, Austin Store, LuciBook, dan AustinPlay." />
   <meta property="og:image" content="assets/avatar.webp?v=2" />
 
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23000000' stroke='%232563EB' stroke-width='4'/%3E%3Cpath d='M32 14L48 48H40L36.5 40H27.5L24 48H16L32 14ZM30 34H34L32 29L30 34Z' fill='%233B82F6'/%3E%3C/svg%3E" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png?v=3" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -181,7 +195,7 @@
   <header class="fixed top-4 left-0 right-0 z-50 flex justify-center px-4">
     <nav aria-label="Navigasi Utama" class="flex items-center gap-2 sm:gap-6 bg-surface-100/85 backdrop-blur-md border border-surface-400 rounded-2xl px-3 py-2">
       <a href="#hero" class="flex items-center gap-2 rounded-lg px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300 ease-weighted hover:bg-surface-200 active:scale-[0.98]">
-        <span class="flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-xs font-bold text-white">A</span>
+        <img src="assets/logo.webp?v=3" alt="Logo Austin Official" width="24" height="24" decoding="async" class="h-6 w-6 rounded-md object-cover" />
         <span class="text-sm font-semibold tracking-tight text-white">Austin Official</span>
       </a>
 
@@ -929,7 +943,7 @@
     <div class="max-w-6xl mx-auto rounded-2xl bg-surface-100 border border-surface-400 p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
       <div>
         <div class="flex items-center gap-2">
-          <span class="flex h-6 w-6 items-center justify-center rounded-md bg-blue-600 text-xs font-bold text-white">A</span>
+          <img src="assets/logo.webp?v=3" alt="Logo Austin Official" width="24" height="24" decoding="async" class="h-6 w-6 rounded-md object-cover" />
           <span class="text-base font-bold text-white">Ach Muhlis • Austin Official</span>
         </div>
         <p class="text-xs text-neutral-400 mt-1">
