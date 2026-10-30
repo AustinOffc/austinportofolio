@@ -25,6 +25,17 @@ assets/
 Skrip kecil di `<head>` `index.html` mengubah viewport jadi lebar 1024 saat terdeteksi Android,
 jadi tampilan desktop otomatis. Ubah `DESKTOP_WIDTH` untuk mengatur lebarnya.
 
+## Animasi scroll
+
+Elemen di bawah layar sengaja disembunyikan dulu, lalu muncul bertahap (fade + geser + blur, urut satu per satu)
+saat di-scroll ke area itu. Ada juga progress bar scroll, cahaya biru di hero yang ikut bergerak, spotlight
+yang mengikuti kursor di card, dan angka hero yang menghitung naik.
+
+- Semua kodenya ada di bagian `Efek scroll & visual` (CSS di `<style>`, JS di `<script>` terakhir) di `index.html`.
+- Mau elemen baru ikut animasi: tambahkan atribut `data-rv="up"` (pilihan: `up`, `blur`, `left`, `right`, `zoom`, `fade`).
+- Kecepatan stagger: ubah `STEP` di script. Durasi: ubah `900ms` pada `.rv-in[data-rv]`.
+- Pengguna yang mengaktifkan "kurangi animasi" di perangkatnya otomatis melihat semuanya langsung tanpa animasi.
+
 ## Musik latar
 
 Lagu latar ada di `assets/music.mp3`. Untuk ganti lagu, timpa file itu dengan nama yang sama.

@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script>document.documentElement.classList.add('js');</script>
   <script>
     // Android: paksa layout desktop (mirip "Situs desktop" di Chrome).
     // Lebar 1024 = breakpoint lg Tailwind, jadi tampilan desktop aktif penuh.
@@ -105,12 +106,16 @@
     .reveal-word {
       opacity: 0.28;
       color: #FFFFFF;
-      transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1), transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+      transform: translateY(8px);
+      filter: blur(2.5px);
+      transition: opacity 500ms cubic-bezier(0.22, 1, 0.36, 1), transform 500ms cubic-bezier(0.22, 1, 0.36, 1), filter 500ms cubic-bezier(0.22, 1, 0.36, 1), color 500ms cubic-bezier(0.22, 1, 0.36, 1);
       display: inline-block;
     }
 
     .reveal-word.active-word {
       opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
     }
 
     .reveal-word.highlight-blue.active-word {
@@ -166,6 +171,7 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
+      .reveal-word { transform: none !important; filter: none !important; }
       .reveal-section {
         transform: none !important;
         transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1) !important;
@@ -180,6 +186,110 @@
         animation: none !important;
       }
     }
+
+    /* ===== Efek scroll & visual ===== */
+    :root { --ease-out: cubic-bezier(0.22, 1, 0.36, 1); }
+
+    /* Reveal: sembunyi dulu, muncul saat masuk layar. Pakai properti translate/filter
+       (bukan transform) supaya tidak bentrok dengan hover/active Tailwind. */
+    .js [data-rv]:not(.rv-in) { opacity: 0; }
+    .rv-in[data-rv] { animation: rv-up 900ms var(--ease-out) var(--rv-delay, 0ms) backwards; }
+    .rv-in[data-rv="blur"]  { animation-name: rv-blur; animation-duration: 1000ms; }
+    .rv-in[data-rv="left"]  { animation-name: rv-left; }
+    .rv-in[data-rv="right"] { animation-name: rv-right; }
+    .rv-in[data-rv="zoom"]  { animation-name: rv-zoom; animation-duration: 800ms; }
+    .rv-in[data-rv="fade"]  { animation-name: rv-fade; animation-duration: 700ms; }
+    .rv-in[data-rv="kid"]   { animation-name: rv-kid; animation-duration: 700ms; }
+    .rv-in[data-rv-instant] { animation: none; }
+
+    @keyframes rv-up    { from { opacity: 0; translate: 0 40px;  filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+    @keyframes rv-blur  { from { opacity: 0; translate: 0 28px;  filter: blur(14px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+    @keyframes rv-left  { from { opacity: 0; translate: -56px 0; filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+    @keyframes rv-right { from { opacity: 0; translate: 56px 0;  filter: blur(6px); } to { opacity: 1; translate: 0 0; filter: blur(0); } }
+    @keyframes rv-zoom  { from { opacity: 0; translate: 0 24px; scale: 0.9; filter: blur(4px); } to { opacity: 1; translate: 0 0; scale: 1; filter: blur(0); } }
+    @keyframes rv-fade  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes rv-kid   { from { opacity: 0; translate: 0 18px; } to { opacity: 1; translate: 0 0; } }
+
+    /* Garis aksen biru di bawah judul section, "tergambar" saat judul muncul */
+    .js h2[data-rv]::after {
+      content: '';
+      display: block;
+      width: 0;
+      height: 3px;
+      margin-top: 16px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, #2563EB, #60A5FA 60%, transparent);
+      transition: width 900ms var(--ease-out) 350ms;
+    }
+    .js h2[data-rv].rv-in::after { width: 88px; }
+
+    /* Progress bar scroll di atas halaman */
+    #scroll-progress {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      z-index: 60;
+      pointer-events: none;
+      transform-origin: 0 50%;
+      transform: scaleX(var(--p, 0));
+      background: linear-gradient(90deg, #2563EB, #60A5FA);
+      box-shadow: 0 0 12px rgba(59, 130, 246, 0.8);
+    }
+
+    /* Navbar: masuk dari atas saat dibuka, lalu bersinar tipis setelah di-scroll */
+    header > nav { animation: nav-in 900ms var(--ease-out) 150ms backwards; transition: box-shadow 400ms var(--ease-out), border-color 400ms var(--ease-out); }
+    header.is-scrolled > nav { border-color: rgba(59, 130, 246, 0.35); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), 0 0 24px rgba(37, 99, 235, 0.18); }
+    @keyframes nav-in { from { opacity: 0; translate: 0 -28px; } to { opacity: 1; translate: 0 0; } }
+
+    /* Hero: cahaya biru melayang + titik-titik halus, bergerak pelan saat di-scroll */
+    .hero-glow {
+      position: absolute;
+      border-radius: 9999px;
+      pointer-events: none;
+      filter: blur(60px);
+      translate: 0 calc(var(--sy, 0) * -0.14px);
+      animation: glow-float 14s ease-in-out infinite alternate;
+    }
+    .hero-glow-1 { width: 520px; height: 520px; top: -120px; left: -140px; background: radial-gradient(circle, rgba(37, 99, 235, 0.38), transparent 68%); }
+    .hero-glow-2 { width: 440px; height: 440px; top: 160px; right: -120px; background: radial-gradient(circle, rgba(96, 165, 250, 0.22), transparent 68%); animation-duration: 18s; animation-delay: -6s; }
+    @keyframes glow-float {
+      from { transform: translate3d(0, 0, 0) scale(1); }
+      to   { transform: translate3d(40px, 30px, 0) scale(1.15); }
+    }
+    .hero-dots {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.10) 1px, transparent 1.2px);
+      background-size: 26px 26px;
+      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, #000 20%, transparent 75%);
+      mask-image: radial-gradient(ellipse 70% 60% at 50% 35%, #000 20%, transparent 75%);
+    }
+
+    /* Spotlight biru yang mengikuti kursor di atas card (hanya perangkat dengan mouse) */
+    @media (hover: hover) and (pointer: fine) {
+      .spot { position: relative; }
+      .spot::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 350ms var(--ease-out);
+        background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), rgba(59, 130, 246, 0.13), transparent 45%);
+      }
+      .spot:hover::after { opacity: 1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .js [data-rv]:not(.rv-in) { opacity: 1; }
+      .rv-in[data-rv] { animation: none; }
+      .js h2[data-rv]::after { width: 88px; transition: none; }
+      #scroll-progress { display: none; }
+      header > nav { animation: none; }
+      .hero-glow { animation: none; translate: none; }
+    }
   </style>
 </head>
 <body class="bg-surface-0 text-white antialiased selection:bg-blue-600 selection:text-white">
@@ -187,6 +297,8 @@
   <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-blue-600 focus:text-white focus:px-3 focus:py-2 focus:rounded-lg focus:text-sm focus:font-semibold focus:outline-none focus:ring-2 focus:ring-white">
     Lompat ke konten utama
   </a>
+
+  <div id="scroll-progress" aria-hidden="true"></div>
 
   <audio id="bg-music" preload="none" loop>
     <source src="assets/music.mp3?v=1793213920550" type="audio/mpeg" />
@@ -312,26 +424,29 @@
 
   <main id="main-content">
 
-    <section id="hero" class="pt-24 pb-16 md:pt-24 md:pb-24 px-4 sm:px-6">
-      <div class="max-w-6xl mx-auto pt-8">
+    <section id="hero" class="relative overflow-hidden pt-24 pb-16 md:pt-24 md:pb-24 px-4 sm:px-6">
+      <div class="hero-dots" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+      <div class="relative max-w-6xl mx-auto pt-8">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           
           <div class="lg:col-span-7 flex flex-col items-start gap-6">
-            <div class="inline-flex items-center gap-2 rounded-full bg-surface-100 border border-surface-400 px-3 py-1">
+            <div data-rv="up" class="inline-flex items-center gap-2 rounded-full bg-surface-100 border border-surface-400 px-3 py-1">
               <span class="h-2 w-2 rounded-full bg-blue-500"></span>
               <span class="text-xs text-neutral-300">Muhlis, 23 tahun, anak Madura</span>
             </div>
 
-            <h1 class="text-white text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight max-w-[680px]">
+            <h1 data-rv="blur" class="text-white text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight max-w-[680px]">
               Halo, Austin disini yang suka bikin project iseng-iseng,<br class="hidden sm:inline" />
               dan sebagian malah kepakai beneran.
             </h1>
 
-            <p class="text-base sm:text-lg text-neutral-400 max-w-[680px]">
+            <p data-rv="up" class="text-base sm:text-lg text-neutral-400 max-w-[680px]">
               Aku Muhlis dari Lombang, Sumenep. Bikin payment gateway, toko top up game, app catatan, sampai pemutar musik tanpa iklan. Kodenya dibantu AI, idenya dan begadangnya dari aku.
             </p>
 
-            <div class="flex flex-wrap items-center gap-4 pt-2">
+            <div data-rv="up" class="flex flex-wrap items-center gap-4 pt-2">
               <a
                 href="#proyek"
                 class="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-3 py-2 text-base font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
@@ -342,23 +457,23 @@
             </div>
 
             <div class="grid grid-cols-3 gap-4 pt-4 w-full max-w-[680px]">
-              <div class="rounded-xl bg-surface-100 border border-surface-300 p-3">
-                <p class="text-xl sm:text-2xl font-bold font-mono text-white">4 web</p>
+              <div data-rv="zoom" class="spot rounded-xl bg-surface-100 border border-surface-300 p-3">
+                <p class="text-xl sm:text-2xl font-bold font-mono text-white"><span data-count="4" data-from="0">4</span> web</p>
                 <p class="text-xs text-neutral-400 mt-1">yang beneran jalan</p>
               </div>
-              <div class="rounded-xl bg-surface-100 border border-surface-300 p-3">
-                <p class="text-xl sm:text-2xl font-bold font-mono text-blue-400">2003</p>
+              <div data-rv="zoom" class="spot rounded-xl bg-surface-100 border border-surface-300 p-3">
+                <p class="text-xl sm:text-2xl font-bold font-mono text-blue-400"><span data-count="2003" data-from="1983">2003</span></p>
                 <p class="text-xs text-neutral-400 mt-1">Lahir di Sumenep</p>
               </div>
-              <div class="rounded-xl bg-surface-100 border border-surface-300 p-3">
-                <p class="text-xl sm:text-2xl font-bold font-mono text-white">5 akun</p>
+              <div data-rv="zoom" class="spot rounded-xl bg-surface-100 border border-surface-300 p-3">
+                <p class="text-xl sm:text-2xl font-bold font-mono text-white"><span data-count="5" data-from="0">5</span> akun</p>
                 <p class="text-xs text-neutral-400 mt-1">buat nyapa aku</p>
               </div>
             </div>
           </div>
 
           <div class="lg:col-span-5">
-            <div class="rounded-3xl bg-surface-100 border border-surface-400 p-4 transition duration-500 ease-weighted hover:border-blue-600">
+            <div data-rv="right" class="rounded-3xl bg-surface-100 border border-surface-400 p-4 transition duration-500 ease-weighted hover:border-blue-600">
               
               <div class="rounded-lg bg-surface-200 border border-surface-400 p-3 flex items-center justify-between mb-4">
                 <div class="flex items-center gap-2">
@@ -1460,6 +1575,169 @@
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     });
+  </script>
+
+  <script>
+    /* ===== Efek scroll & visual =====
+       Kalau ada error di sini, class "js" dicopot supaya semua konten tetap terlihat. */
+    (function () {
+      try {
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var STEP = 90;   // jeda antar elemen yang muncul bersamaan (ms)
+        var MAX_STEPS = 7;
+        var io = null;
+
+        function $all(sel, root) { return Array.prototype.slice.call((root || document).querySelectorAll(sel)); }
+
+        function countUp(node, delay) {
+          var to = parseFloat(node.getAttribute('data-count'));
+          var from = parseFloat(node.getAttribute('data-from') || '0');
+          if (isNaN(to) || reduce) return;
+          node.textContent = from;
+          setTimeout(function () {
+            var t0 = null, dur = 1400;
+            function tick(t) {
+              if (t0 === null) t0 = t;
+              var p = Math.min((t - t0) / dur, 1);
+              var e = 1 - Math.pow(1 - p, 4);
+              node.textContent = Math.round(from + (to - from) * e);
+              if (p < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+          }, delay + 200);
+        }
+
+        function show(el, delay, instant) {
+          if (el.classList.contains('rv-in')) return;
+          var d = instant ? 0 : delay;
+          if (instant) el.setAttribute('data-rv-instant', '');
+          el.style.setProperty('--rv-delay', d + 'ms');
+          el.classList.add('rv-in');
+
+          if (el.hasAttribute('data-rv-kids')) {
+            Array.prototype.forEach.call(el.children, function (kid, i) {
+              if (instant) kid.setAttribute('data-rv-instant', '');
+              kid.style.setProperty('--rv-delay', (d + 160 + i * 110) + 'ms');
+              kid.classList.add('rv-in');
+            });
+          }
+          $all('[data-count]', el).forEach(function (n) { countUp(n, d); });
+        }
+
+        function tag(el, variant, kids) {
+          if (!el || el.hasAttribute('data-rv')) return;
+          el.setAttribute('data-rv', variant || 'up');
+          if (kids) {
+            el.setAttribute('data-rv-kids', '');
+            Array.prototype.forEach.call(el.children, function (k) { k.setAttribute('data-rv', 'kid'); });
+          }
+        }
+
+        function tagAll(sel, variant, kids, spot) {
+          $all(sel).forEach(function (el, i) {
+            var v = typeof variant === 'function' ? variant(i) : variant;
+            tag(el, v, kids);
+            if (spot) el.classList.add('spot');
+          });
+        }
+
+        function observe(el) { if (io && !el.classList.contains('rv-in') && el.getAttribute('data-rv') !== 'kid') io.observe(el); }
+
+        function domOrder(a, b) { return a.compareDocumentPosition(b) & 4 ? -1 : 1; }
+
+        // Tandai elemen mana saja yang mau dianimasikan
+        tagAll('main section:not(#hero) h2', 'blur');
+        tagAll('main section:not(#hero) .mb-12 p', 'up');
+        tagAll('#proyek [role="tablist"]', 'right');
+        tagAll('#biodata article', function (i) { return i % 2 === 0 ? 'left' : 'right'; }, true, true);
+        tagAll('#proyek .mb-8 > div', 'up', false, true);
+        tagAll('#alur .grid > div', 'up', true, true);
+        tagAll('#socials-grid > a', 'zoom', false, true);
+        tagAll('#faq-container > div', 'up');
+        tagAll('#kontak .rounded-3xl', 'zoom');
+        tagAll('#kontak .rounded-3xl > div:first-child', 'fade', true);
+        tagAll('#kontak form', 'right', true);
+        tagAll('footer > div', 'up');
+
+        if (!('IntersectionObserver' in window)) {
+          $all('[data-rv]').forEach(function (el) { show(el, 0, true); });
+        } else {
+          io = new IntersectionObserver(function (entries) {
+            var visible = entries.filter(function (e) { return e.isIntersecting; })
+              .map(function (e) { return e.target; }).sort(domOrder);
+            visible.forEach(function (el, i) {
+              show(el, Math.min(i, MAX_STEPS) * STEP, false);
+              io.unobserve(el);
+            });
+            // Elemen yang sudah terlewat (misal halaman dibuka di tengah / lompat lewat menu): tampilkan langsung
+            entries.forEach(function (e) {
+              if (!e.isIntersecting && e.boundingClientRect.top < 0) {
+                show(e.target, 0, true);
+                io.unobserve(e.target);
+              }
+            });
+          }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+          $all('[data-rv]').forEach(observe);
+
+          // Card proyek dirender lewat JS (dan dirender ulang tiap ganti filter)
+          var grid = document.getElementById('projects-grid');
+          if (grid) {
+            new MutationObserver(function (muts) {
+              muts.forEach(function (m) {
+                Array.prototype.forEach.call(m.addedNodes, function (n) {
+                  if (n.nodeType === 1 && n.tagName === 'ARTICLE') {
+                    tag(n, 'zoom');
+                    n.classList.add('spot');
+                    observe(n);
+                  }
+                });
+              });
+            }).observe(grid, { childList: true });
+          }
+        }
+
+        // Scroll: progress bar, parallax glow hero, bayangan navbar
+        var bar = document.getElementById('scroll-progress');
+        var header = document.querySelector('header');
+        var root = document.documentElement;
+        var ticking = false;
+
+        function onScroll() {
+          var y = window.pageYOffset || root.scrollTop || 0;
+          var max = Math.max(root.scrollHeight - window.innerHeight, 1);
+          if (bar) bar.style.setProperty('--p', Math.min(y / max, 1).toFixed(4));
+          if (!reduce && y < 1400) root.style.setProperty('--sy', Math.round(y));
+          if (header) header.classList.toggle('is-scrolled', y > 12);
+          ticking = false;
+        }
+        window.addEventListener('scroll', function () {
+          if (!ticking) { ticking = true; requestAnimationFrame(onScroll); }
+        }, { passive: true });
+        window.addEventListener('resize', onScroll);
+        onScroll();
+
+        // Spotlight yang mengikuti kursor (hanya perangkat dengan mouse)
+        if (!reduce && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+          var spotCard = null, spotX = 0, spotY = 0, spotRaf = 0;
+          document.addEventListener('pointermove', function (e) {
+            var c = e.target.closest && e.target.closest('.spot');
+            if (!c) return;
+            spotCard = c; spotX = e.clientX; spotY = e.clientY;
+            if (spotRaf) return;
+            spotRaf = requestAnimationFrame(function () {
+              spotRaf = 0;
+              var r = spotCard.getBoundingClientRect();
+              spotCard.style.setProperty('--mx', (spotX - r.left) + 'px');
+              spotCard.style.setProperty('--my', (spotY - r.top) + 'px');
+            });
+          }, { passive: true });
+        }
+      } catch (err) {
+        document.documentElement.classList.remove('js');
+        if (window.console) console.warn('Efek scroll dimatikan:', err);
+      }
+    })();
   </script>
 </body>
 </html>
