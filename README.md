@@ -33,8 +33,7 @@ tombol berukuran normal dan mudah dibaca. Desktop (>= 768px) tampilannya tidak b
 - Mobile: navbar selebar layar dengan tombol 44px, teks kecil dinaikkan (12px jadi 13px, 14px jadi 15px),
   jarak antar bagian lebih rapat, identitas 2 kolom, hitung mundur muat 4 kolom, filter proyek 3 tombol sama lebar,
   form kontak selebar mungkin, modal jadi bottom sheet, toast di bawah tengah, aman dari poni dan home bar.
-- Zoom tetap dimatikan (`user-scalable=no`, blok `gesturestart`, `touch-locked` di `<html>`). Mau mengizinkan zoom?
-  Hapus `maximum-scale=1, user-scalable=no` di skrip `<head>` dan class `touch-locked`.
+- Zoom (cubit / ketuk dua kali) sekarang diizinkan demi aksesibilitas. Class `touch-device` di `<html>` hanya menjaga kolom isian tetap 16px agar iOS tidak auto-zoom.
 - Kolom isian 16px di perangkat sentuh (mencegah auto-zoom iOS).
 
 ## Responsif & smooth
@@ -111,3 +110,18 @@ Saat diminta password, pakai Personal Access Token GitHub, bukan password akun.
 2. Import repo GitHub tadi.
 3. Framework Preset: Other. Build Command dan Output Directory dikosongkan.
 4. Klik Deploy. Tiap `git push` berikutnya otomatis deploy ulang.
+
+## SEO
+
+- `robots.txt` dan `sitemap.xml` memakai domain `https://ach-muhlis.my.id`. Ganti jika domain berubah (termasuk `canonical`, `og:url`, `og:image`, dan JSON-LD di `<head>`).
+- Kartu proyek sudah ditulis statis di `#projects-grid` (HTML awal) lalu dirender ulang oleh JS saat filter dipakai. Jika `portfolioData.links` diubah, ubah juga kartu statis di HTML.
+
+## Tailwind statis
+
+Halaman memakai CSS hasil build di `assets/tailwind.css` (bukan lagi `cdn.tailwindcss.com`). Konfigurasi ada di `tailwind.config.js`.
+Setiap kali class Tailwind di `index.html` berubah, build ulang lalu naikkan angka `?v=` pada `<link rel="stylesheet" href="assets/tailwind.css?v=1">`:
+
+```bash
+npm install            # atau: bun install
+npm run build:css      # atau: bun run build:css
+```

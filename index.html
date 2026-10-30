@@ -8,36 +8,55 @@
   <script>document.documentElement.classList.add('js');</script>
   <script>
     // Android & iOS: layout mengikuti lebar layar asli (layout mobile khusus, bukan desktop yang diperkecil).
-    // Zoom (cubit / ketuk dua kali) tetap dimatikan seperti sebelumnya.
     (function () {
       var ua = navigator.userAgent || '';
       var isIPadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
       if (!(/Android|iPhone|iPad|iPod/i.test(ua) || isIPadOS)) return;
 
-      var vp = document.querySelector('meta[name="viewport"]');
-      if (vp) vp.setAttribute('content', 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover');
-      document.documentElement.classList.add('touch-locked');
-
-      // iOS Safari mengabaikan user-scalable=no, jadi gesture cubit diblok lewat event bawaan Safari.
-      // (Bukan touchmove, supaya scroll tetap mulus.)
-      ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (t) {
-        document.addEventListener(t, function (e) { e.preventDefault(); }, { passive: false });
-      });
+      // Zoom diizinkan (aksesibilitas). Class ini hanya dipakai untuk menjaga kolom isian 16px di iOS.
+      document.documentElement.classList.add('touch-device');
     })();
   </script>
   <title>Ach Muhlis (Austin Official) | Portofolio & Biodata</title>
   <meta name="description" content="Portofolio Ach Muhlis (Austin Official), anak Lombang, Sumenep yang suka bikin web dibantu AI: AustinPay, Austin Store, LuciBook, dan AustinPlay." />
   <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://ach-muhlis.my.id/" />
   
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ach-muhlis.my.id/" />
+  <meta property="og:site_name" content="Austin Official" />
+  <meta property="og:locale" content="id_ID" />
   <meta property="og:title" content="Muhlis | Austin Official" />
   <meta property="og:description" content="Web iseng yang akhirnya kepakai: AustinPay, Austin Store, LuciBook, dan AustinPlay." />
-  <meta property="og:image" content="assets/og-image.jpg?v=1" />
+  <meta property="og:image" content="https://ach-muhlis.my.id/assets/og-image.jpg?v=1" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:image" content="assets/og-image.jpg?v=1" />
+  <meta name="twitter:image" content="https://ach-muhlis.my.id/assets/og-image.jpg?v=1" />
 
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://ach-muhlis.my.id/#website",
+        "url": "https://ach-muhlis.my.id/",
+        "name": "Austin Official",
+        "inLanguage": "id"
+      },
+      {
+        "@type": "Person",
+        "@id": "https://ach-muhlis.my.id/#person",
+        "name": "Ach Muhlis",
+        "alternateName": "Austin Official",
+        "url": "https://ach-muhlis.my.id/",
+        "image": "https://ach-muhlis.my.id/assets/avatar.webp",
+        "sameAs": ["https://instagram.com/_austin.official"]
+      }
+    ]
+  }
+  </script>
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=3" />
   <link rel="icon" type="image/png" sizes="48x48" href="assets/favicon-48.png?v=3" />
   <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png?v=3" />
@@ -48,34 +67,7 @@
 
   <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      future: { hoverOnlyWhenSupported: true },
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Geist', 'sans-serif'],
-            mono: ['Geist Mono', 'monospace'],
-          },
-          colors: {
-            surface: {
-              0: '#000000',
-              100: '#181818',
-              200: '#1F1F1F',
-              300: '#272727',
-              400: '#313131',
-              warm: '#131209'
-            }
-          },
-          transitionTimingFunction: {
-            'weighted': 'cubic-bezier(0.22, 1, 0.36, 1)',
-          }
-        }
-      }
-    };
-  </script>
+  <link rel="stylesheet" href="assets/tailwind.css?v=1" />
 
   <style>
     * {
@@ -97,16 +89,10 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Perangkat sentuh: hanya geser (scroll) yang boleh, cubit & ketuk dua kali tidak zoom */
-    html.touch-locked,
-    html.touch-locked body {
-      touch-action: pan-x pan-y;
-    }
-
     /* iOS otomatis zoom saat kolom isian < 16px; dibuat 16px supaya halaman tidak bergeser */
-    html.touch-locked input,
-    html.touch-locked textarea,
-    html.touch-locked select {
+    html.touch-device input,
+    html.touch-device textarea,
+    html.touch-device select {
       font-size: 16px !important;
     }
 
@@ -837,7 +823,7 @@
               </div>
               <div class="rounded-xl bg-surface-200 border border-surface-400 p-4">
                 <p class="text-xs font-mono text-neutral-400">Kerjaan</p>
-                <p class="text-lg font-bold text-white mt-1">Ngoding bareng AI</p>
+                <p class="text-lg font-bold text-white mt-1">AI-assisted developer</p>
               </div>
             </div>
 
@@ -1139,7 +1125,174 @@
         </div>
 
         <div id="projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+<article class="rounded-2xl bg-surface-0 border border-surface-400 p-2 flex flex-col justify-between transition duration-300 ease-weighted hover:border-blue-500 hover:-translate-y-1">
+          <div class="rounded-lg bg-surface-200 border border-surface-300 p-4 flex-1 flex flex-col justify-between gap-4">
+            <div class="flex items-start justify-between gap-3">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-0 border border-surface-400 text-blue-400">
+                <img src="assets/austinpay.webp" alt="Logo AustinPay" width="48" height="48" loading="lazy" decoding="async" class="h-full w-full object-cover" onerror="this.outerHTML='<i class=&quot;ph ph-wallet text-xl&quot; aria-hidden=&quot;true&quot;></i>'" />
+              </span>
+              <span class="text-xs font-mono text-neutral-400 bg-surface-0 border border-surface-400 px-2 py-1 rounded">
+                austinx.cloud
+              </span>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">AustinPay</h3>
+              <p class="text-sm text-neutral-400 mt-1">Website payment gateway</p>
+            </div>
+            <div class="pt-2">
+              <a
+                href="https://austinx.cloud"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full inline-flex items-center justify-between rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Buka AustinPay</span>
+                <i class="ph ph-arrow-up-right text-base" aria-hidden="true"></i>
+              </a>
+            </div>
           </div>
+        </article>
+      
+        <article class="rounded-2xl bg-surface-0 border border-surface-400 p-2 flex flex-col justify-between transition duration-300 ease-weighted hover:border-blue-500 hover:-translate-y-1">
+          <div class="rounded-lg bg-surface-200 border border-surface-300 p-4 flex-1 flex flex-col justify-between gap-4">
+            <div class="flex items-start justify-between gap-3">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-0 border border-surface-400 text-blue-400">
+                <img src="assets/mymarket.webp" alt="Logo Austin Store" width="48" height="48" loading="lazy" decoding="async" class="h-full w-full object-cover" onerror="this.outerHTML='<i class=&quot;ph ph-shopping-bag text-xl&quot; aria-hidden=&quot;true&quot;></i>'" />
+              </span>
+              <span class="text-xs font-mono text-neutral-400 bg-surface-0 border border-surface-400 px-2 py-1 rounded">
+                mymarket.id
+              </span>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">Austin Store</h3>
+              <p class="text-sm text-neutral-400 mt-1">Marketplace top up semua game & layanan digital lengkap</p>
+            </div>
+            <div class="pt-2">
+              <a
+                href="https://mymarket.id"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full inline-flex items-center justify-between rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Buka Austin Store</span>
+                <i class="ph ph-arrow-up-right text-base" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+      
+        <article class="rounded-2xl bg-surface-0 border border-surface-400 p-2 flex flex-col justify-between transition duration-300 ease-weighted hover:border-blue-500 hover:-translate-y-1">
+          <div class="rounded-lg bg-surface-200 border border-surface-300 p-4 flex-1 flex flex-col justify-between gap-4">
+            <div class="flex items-start justify-between gap-3">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-0 border border-surface-400 text-blue-400">
+                <img src="assets/lucibook.webp" alt="Logo LuciBook" width="48" height="48" loading="lazy" decoding="async" class="h-full w-full object-cover" onerror="this.outerHTML='<i class=&quot;ph ph-book-open-text text-xl&quot; aria-hidden=&quot;true&quot;></i>'" />
+              </span>
+              <span class="text-xs font-mono text-neutral-400 bg-surface-0 border border-surface-400 px-2 py-1 rounded">
+                lucibook.my.id
+              </span>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">LuciBook</h3>
+              <p class="text-sm text-neutral-400 mt-1">Website catatan, catat apa saja dimana saja</p>
+            </div>
+            <div class="pt-2">
+              <a
+                href="https://lucibook.my.id"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full inline-flex items-center justify-between rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Buka LuciBook</span>
+                <i class="ph ph-arrow-up-right text-base" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+      
+        <article class="rounded-2xl bg-surface-0 border border-surface-400 p-2 flex flex-col justify-between transition duration-300 ease-weighted hover:border-blue-500 hover:-translate-y-1">
+          <div class="rounded-lg bg-surface-200 border border-surface-300 p-4 flex-1 flex flex-col justify-between gap-4">
+            <div class="flex items-start justify-between gap-3">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-0 border border-surface-400 text-blue-400">
+                <img src="assets/austinplay.webp" alt="Logo AustinPlay" width="48" height="48" loading="lazy" decoding="async" class="h-full w-full object-cover" onerror="this.outerHTML='<i class=&quot;ph ph-music-notes text-xl&quot; aria-hidden=&quot;true&quot;></i>'" />
+              </span>
+              <span class="text-xs font-mono text-neutral-400 bg-surface-0 border border-surface-400 px-2 py-1 rounded">
+                austinplay.my.id
+              </span>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">AustinPlay</h3>
+              <p class="text-sm text-neutral-400 mt-1">Website musik tanpa iklan</p>
+            </div>
+            <div class="pt-2">
+              <a
+                href="https://austinplay.my.id"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full inline-flex items-center justify-between rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Buka AustinPlay</span>
+                <i class="ph ph-arrow-up-right text-base" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+      
+        <article class="rounded-2xl bg-surface-0 border border-surface-400 p-2 flex flex-col justify-between transition duration-300 ease-weighted hover:border-blue-500 hover:-translate-y-1">
+          <div class="rounded-lg bg-surface-200 border border-surface-300 p-4 flex-1 flex flex-col justify-between gap-4">
+            <div class="flex items-start justify-between gap-3">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-0 border border-surface-400 text-blue-400">
+                <i class="ph ph-megaphone text-xl" aria-hidden="true"></i>
+              </span>
+              <span class="text-xs font-mono text-neutral-400 bg-surface-0 border border-surface-400 px-2 py-1 rounded">
+                whatsapp.com/channel
+              </span>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">Channel Austin Official</h3>
+              <p class="text-sm text-neutral-400 mt-1">Channel informasi Austin di WhatsApp</p>
+            </div>
+            <div class="pt-2">
+              <a
+                href="https://whatsapp.com/channel/0029VbAYbLc7tkizhltuyV1b"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full inline-flex items-center justify-between rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Buka Channel Austin Official</span>
+                <i class="ph ph-arrow-up-right text-base" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+      
+        <article class="rounded-2xl bg-surface-0 border border-surface-400 p-2 flex flex-col justify-between transition duration-300 ease-weighted hover:border-blue-500 hover:-translate-y-1">
+          <div class="rounded-lg bg-surface-200 border border-surface-300 p-4 flex-1 flex flex-col justify-between gap-4">
+            <div class="flex items-start justify-between gap-3">
+              <span class="flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-surface-0 border border-surface-400 text-blue-400">
+                <i class="ph ph-users-three text-xl" aria-hidden="true"></i>
+              </span>
+              <span class="text-xs font-mono text-neutral-400 bg-surface-0 border border-surface-400 px-2 py-1 rounded">
+                chat.whatsapp.com
+              </span>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold text-white">Group Community</h3>
+              <p class="text-sm text-neutral-400 mt-1">Group community & informasi Austin</p>
+            </div>
+            <div class="pt-2">
+              <a
+                href="https://chat.whatsapp.com/CTzGwCpgWD65QuLkIicc89"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-full inline-flex items-center justify-between rounded-lg bg-blue-600 px-3 py-2 text-sm font-semibold text-white transition duration-300 ease-weighted hover:bg-blue-500 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-blue-400"
+              >
+                <span>Buka Group Community</span>
+                <i class="ph ph-arrow-up-right text-base" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </article>
+        </div>
 
         <div id="projects-empty" class="hidden rounded-2xl bg-surface-0 border border-surface-400 p-8 text-center">
           <p class="text-lg font-bold text-white">Di kategori ini masih kosong.</p>
@@ -1200,7 +1353,7 @@
             <div>
               <h3 class="text-xl font-bold text-white">Rilis, lalu dengar kata orang</h3>
               <p class="text-sm text-neutral-400 mt-2">
-                Naik ke domain publik seperti mymarket.id atau austinplay.vercel.app, lalu ngobrol sama komunitas di WhatsApp.
+                Naik ke domain publik seperti mymarket.id atau austinplay.my.id, lalu ngobrol sama komunitas di WhatsApp.
               </p>
             </div>
           </div>
@@ -1243,7 +1396,7 @@
               <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted rotate-180" aria-hidden="true"></i>
             </button>
             <div class="faq-content px-2 pt-2 pb-1 text-sm text-neutral-300">
-              Aku, Ach Muhlis. 23 tahun, tinggal di Lombang, Sumenep, dan ngoding dibantu AI.
+              Aku, Ach Muhlis. 23 tahun, tinggal di Lombang, Sumenep, dan AI-assisted developer.
             </div>
           </div>
 
@@ -1253,7 +1406,7 @@
               <i class="ph ph-caret-down text-xl text-blue-400 transition-transform duration-500 ease-weighted" aria-hidden="true"></i>
             </button>
             <div class="faq-content hidden px-2 pt-2 pb-1 text-sm text-neutral-300">
-              Empat web: AustinPay (austinx.cloud) buat payment gateway, Austin Store (mymarket.id) buat top up game dan layanan digital, LuciBook (lucibook.my.id) buat nyatet, dan AustinPlay (austinplay.vercel.app) buat dengerin musik tanpa iklan.
+              Empat web: AustinPay (austinx.cloud) buat payment gateway, Austin Store (mymarket.id) buat top up game dan layanan digital, LuciBook (lucibook.my.id) buat nyatet, dan AustinPlay (austinplay.my.id) buat dengerin musik tanpa iklan.
             </div>
           </div>
 
@@ -1517,8 +1670,8 @@
         {
           title: "AustinPlay",
           desc: "Website musik tanpa iklan",
-          url: "https://austinplay.vercel.app",
-          domain: "austinplay.vercel.app",
+          url: "https://austinplay.my.id",
+          domain: "austinplay.my.id",
           logo: "assets/austinplay.webp",
           category: "app",
           phIcon: "ph-music-notes"
@@ -1654,8 +1807,7 @@
       `).join('');
     }
 
-    renderSkeletons();
-    setTimeout(() => renderProjects('all'), 220);
+    renderProjects('all');
 
     const filterBtns = document.querySelectorAll('.project-filter-btn');
     filterBtns.forEach(btn => {
