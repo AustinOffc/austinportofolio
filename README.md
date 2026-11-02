@@ -17,6 +17,7 @@ assets/
   favicon-48.png    favicon tab browser
   apple-touch-icon.png  icon saat ditambah ke layar utama
   austinpay.webp    logo AustinPay
+  rvc.webp          logo RVC (Ruang Vibe Coders)
   mymarket.webp     logo Austin Store (mymarket)
   lucibook.webp     logo LuciBook
   austinplay.webp   logo AustinPlay (versi kastil)
